@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet IFT3150 | StepOn</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<header class="page-header">
+    <!-- <img class="logo" style="display: block" src="" height="120" alt="" /> -->
+
+    <h1 class="page-title" style="font-family: 'Bradley Hand', 'cursive'; color: #eeeeee">
+        StepOn <br>
+        <span style="font-size: 0.6em; font-weight: 500; ">IFT3150 &ndash; Projet informatique</span>
+    </h1>
+
+
+    <ul class="bare-list project-infos">
+        <!-- <li class="info ico ico-supervisor">
+            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M404.7 79.78h-2.8c-7.5.26-15.8 1.73-24.8 4.3-18 5.16-38.4 14.56-59.3 25.78-41.9 22.4-85.8 52-121.5 68.6-26.4 12.4-59.3 20.4-89.8 27.5-30.5 7.1-58.95 13.4-74.36 20.6-7.13 3.4-10.9 6.9-12.71 9.9-1.8 2.9-2.1 5.2-1.44 8.4 1.32 6.4 8.57 15.4 18.49 21.9l3.29 2.1c162.63-2.3 289.43-13.7 387.73-52.6 2.1-17.6 6.7-34.7 16.5-48.5v-.1l.1-.1c24.5-32.2 8.9-72.58-22.4-84.89-5-1.95-10.7-2.91-17-2.93zm21.9 185.12c-44.2 25.1-103.8 37-169.2 41.2-68.7 4.4-143.7.1-213.52-7.8l1.89 14c31.19 3.2 98.53 11.8 172.83 11.5 77.2-.3 159.6-11.3 208.6-46.2-.2-4.1-.4-8.3-.6-12.7zm7.1 30.2c-46.9 31.5-113.8 42.9-179.9 45.8 44.7 39 89.3 55.1 127.3 59.1 45.2 4.8 81.5-8.7 94.8-19.8 13-10.8 17.5-19.5 18.3-26.2.7-6.8-2-13.3-8.2-20.5-11.3-13.4-33.5-26.4-52.3-38.4z"></path></svg>
+        </li> -->
+        <li class="info supervisor" title="Superviseur: Louis-Edouard LAFONTANT">
+            <svg class="ico" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M480 288c0-80.25-49.28-148.92-119.19-177.62L320 192V80a16 16 0 0 0-16-16h-96a16 16 0 0 0-16 16v112l-40.81-81.62C81.28 139.08 32 207.75 32 288v64h448zm16 96H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h480a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"></path></svg>
+            <span class="content">Louis-Edouard LAFONTANT</span>
+        </li>
+        <li class="info team" title="Étudiant: Akram ZNINI">
+            <svg class="ico" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z"></path></svg>
+            <span class="content">Océane HAYS</span>
+        </li>
+    </ul>
+
+    <ul class="bare-list project-links">
+        <li class="project-link repo">
+            <a class="bare-link" target="_blank" href="https://github.com/oceane-hays/StepOn">
+                Code source <img class="ico" src="images/github-mark-white.svg" alt="Logo GitHub">
+            </a>
+        </li>
+        <li class="project-link doc">
+            <a class="bare-link disabled" href="#">
+                Rapport <svg class="ico" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M272 41.69V188a4 4 0 0 0 4 4h146.31a2 2 0 0 0 1.42-3.41L275.41 40.27a2 2 0 0 0-3.41 1.42z"></path><path d="M248 224a8 8 0 0 1-8-8V32H92a12 12 0 0 0-12 12v424a12 12 0 0 0 12 12h328a12 12 0 0 0 12-12V224zm104 160H160v-32h192zm0-80H160v-32h192z"></path></svg>
+            </a>
+        </li>
+        <li class="project-link doc">
+            <a class="bare-link disabled" href="#">
+                Présentation <svg class="ico" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Z"></path></svg>
+            </a>
+        </li>
+    </ul>
+</header>
+
+<main class="page-body">
+    <header class="content-wrapper">
+        <h2>Description du projet</h2>
+
+        <p>
+            <!-- TODO: Décrire le contexte dans lequel s'inscrit le projet -->
+            Ce projet est né d'un besoin spécifique : proposer plus qu'une simple application podomètre, mais un
+            système intelligent capable de générer pour l'utilisateur un parcours de marche d'environ 10 000 pas.
+            Ce parcours peut être modifié à volonté pour s'adapter aux préférences et aux contraintes de chacun.
+            L'objectif est de permettre à l'utilisateur d'atteindre facilement ses objectifs sportifs quotidiens
+            tout en intégrant cette activité dans son emploi du temps. L'application fournit également une estimation
+            précise du temps nécessaire pour compléter le parcours, facilitant ainsi la planification de la journée
+            de l'utilisateur.
+        </p>
+
+        <p>
+            <!-- TODO: Décrire la problématique/motivation du projet -->
+            De nos jours, il est souvent difficile de pratiquer une activité physique régulière en raison
+            des contraintes professionnelles, familiales ou personnelles. Le manque de temps et la difficulté
+            à planifier des séances de sport sont des freins quotidiens. En plus de cela,
+            la motivation à faire de l'exercice peut s'effriter sans un accompagnement personnalisé et dynamique.
+        </p>
+
+        <p>
+            <!-- TODO: Décrire la proposition -->
+            La solution proposée est une application innovante qui, à partir des données personnelles de
+            l'utilisateur (temps disponible, objectifs de pas quotidiens, environnement local), génère un parcours
+            de marche sur-mesure. L'application offre également des suggestions de partenaires de marche à proximité
+            grâce à un réseau social intégré, permettant ainsi de renforcer la motivation à travers des interactions
+            sociales. Cette approche personnalisée et sociale vise à rendre l'activité physique plus accessible,
+            engageante et intégrée au quotidien.
+        </p>
+
+    </header>
+
+
+    <section class="content-wrapper">
+        <h2>Exigences</h2>
+
+        <!-- TODO: Décrire les exigences du projet (fonctionnalités, contraintes) -->
+        <ul>
+            <li>Génération de parcours personnalisés : l'application doit être capable de créer des parcours de marche en fonction des objectifs de pas quotidiens de l'utilisateur (par exemple, 10 000 pas), du temps disponible et des préférences environnementales.</li>
+            <li>Estimation du temps de marche : fournir une estimation précise de la durée nécessaire pour compléter le parcours.</li>
+            <li>Flexibilité du parcours : l'utilisateur doit pouvoir modifier le parcours en temps réel (distance, durée, lieu).</li>
+            <li>Intégration d'un réseau social : permettre aux utilisateurs de se connecter avec des partenaires de marche locaux et d'organiser des sessions de marche ensemble.</li>
+            <li>Notifications et rappels : l'application doit envoyer des rappels personnalisés pour encourager l'utilisateur à atteindre ses objectifs.</li>
+            <li>Suivi des progrès : afficher un tableau de bord des progrès quotidiens et hebdomadaires de l'utilisateur avec des statistiques détaillées.</li>
+            <li>Sécurité : assurer une gestion sécurisée des données personnelles.</li>
+
+            <p>En plus : </p>
+            <li>Portabilité : Compatibilité avec les appareils portables (montres connectées, trackers de fitness) pour améliorer l'expérience utilisateur.</li>
+
+        </ul>
+    </section>
+
+    <section class="content-wrapper">
+        <h2>Infrastructure</h2>
+
+        <!-- TODO: Décrire l'infrastructure de l'application -->
+        <ul>
+            <li><strong>Serveur Backend :</strong> Un serveur backend en Node.js/Express gère les requêtes, la génération des parcours, et l'interaction avec une base de données.</li>
+            <li><strong>API Géolocalisation :</strong> Intégration d'APIs de géolocalisation (Google Maps, OpenStreetMap) pour la création des parcours en fonction de l'emplacement de l'utilisateur.</li>
+            <li><strong>Application mobile :</strong> Une application mobile développée en React Native pour Android et iOS afin d'offrir une interface utilisateur fluide et responsive.</li>
+        </ul>
+    </section>
+
+    <section class="content-wrapper progress-section">
+        <header class="progress-section-header">
+            <h2 style="font-size: 3.3em; font-weight: 800;">Rapport d'avancement</h2>
+            <ul class="bare-list phases">
+                <li class="phase fit-content current" title="Exigences & Analyse">Exigences & Analyse</li>
+                <li class="phase fit-content" title="Prototypage & Conception">Prototypage & Conception</li>
+                <li class="phase fit-content" title="Implémentation: Infrastructure & Application">Implémentation: Infrastructure & Application</li>
+                <li class="phase fit-content" title="Validation">Validation</li>
+            </ul>
+            <div class="timeline"></div>
+        </header>
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 1 &ndash;
+                    <time datetime="2024-05-06">Lundi 16 septembre 2024</time>
+                </h3>
+                <p>Ouverture de projet & Élaboration des exigences</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Prendre en main les outils qui seront utilisés pour le projet</li>
+                    <li>Produire une première version de l'échéancier</li>
+                    <li>Déterminer les exigences du projet</li>
+                    <li>Étudier le domaine, les notions et outils envisagés pour le projet</li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+
+                <h4 class="title">Notes</h4>
+                <p></p>
+            </div>
+        </section>
+
+        <!-- TODO semaine 2 a remplir-->
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 2 &ndash;
+                    <time datetime="2024-05-06">Lundi 23 septembre 2024</time>
+                </h3>
+                <p>Élaboration du prototype jetable & Validation du design</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Créer une première version du prototype fonctionnel</li>
+                    <li>Valider les principales interactions utilisateurs</li>
+                    <li>Recueillir les retours sur l'utilisabilité</li>
+                    <li>Documenter les améliorations à apporter au design</li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+                <ul>
+                    <li>Prototype jetable réalisé selon les exigences du cahier des charges</li>
+                    <li>Feedback initial recueilli sur la fluidité de l'interface</li>
+                </ul>
+
+                <h4 class="title">Notes</h4>
+                <p> Le prototype a révélé des améliorations nécessaires en termes de d'utilisabilité, fluidité
+                    et facilité d'apprentissage. </p>
+            </div>
+        </section>
+
+
+        <!-- TODO semaine 3 a remplir-->
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 3 &ndash;
+                    <time datetime="2024-05-06">Lundi 30 septembre 2024</time>
+                </h3>
+                <p>Élaboration du visuel de l'application à l'aide de la plateforme Figma</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Créer les écrans principaux de l'application (page d'accueil, profil, decouverte)</li>
+                    <li>Permettre à l'utilisateur de rentrer ses informations, de modifier ses données...</li>
+                    <li>Prépareration des prototypes pour recueillir les retours des utilisateurs</li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+                <p>Les maquettes haute fidélité ont été créées, intégrant les éléments principaux de l'application. Une première version du tableau de bord et de la page d'accueil est prête pour des tests utilisateur.</p>
+                <p><a href="https://www.figma.com/proto/7EHesNPjy9MzhGUwH1VVFm/StepOn?node-id=0-1&t=7gKUGWNDkRzgEJVg-1" target="_blank" rel="noopener noreferrer">Voir le prototype sur Figma</a></p>
+
+                <h4 class="title">Notes</h4>
+                <p>Il a été nécessaire de revoir certains éléments pour assurer une meilleure facilité d'apprentissage. Des ajustements seront faits en fonction des retours des tests préliminaires.</p>
+            </div>
+        </section>
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 4 &ndash;
+                    <time datetime="2024-05-06">Lundi 7 octobre 2024</time>
+                </h3>
+                <p>Création de la base de données Firebase et du squelette de l'application en React Native</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Configurer Firebase pour le stockage des données utilisateurs et des parcours</li>
+                    <li>Structurer la base de données en respectant les besoins de l'application (utilisateurs, parcours, statistiques)</li>
+                    <li>Mettre en place le squelette de l'application avec React Native</li>
+                    <li>Configurer la connexion entre Firebase et l'application pour permettre la récupération des données</li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+                <p>
+                    La base de données Firebase a été initialisée avec une structure de collection adaptée aux différents modules de l’application (utilisateurs, parcours, statistiques de progression). Un squelette d'application en React Native a été créé, incluant la navigation de base entre les écrans principaux. L'intégration avec Firebase a été réussie, permettant l'authentification et la récupération de données.
+                </p>
+
+                <h4 class="title">Notes</h4>
+                <p>
+                    Mise à jour du fichier <code>README.md</code> pour documenter l'infrastructure et décrire les étapes d'installation et de configuration de Firebase pour le projet.
+                </p>
+            </div>
+        </section>
+
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 5 &ndash;
+                    <time datetime="2024-05-06">Lundi 14 octobre 2024</time>
+                </h3>
+                <p>Revue du Figma et debut de gestion de l'authentification</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Création des pages sur le React Native (login, signin, layout, home) </li>
+                    <li>Finaliser les écrans de connexion, d'inscription et de récupération de mot de passe dans Figma</li>
+                    <li>Préparer l'intégration de Firebase Auth (qui est à redéfinir)</li>
+
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+                <p>
+                    Les écrans d'authentification (login, inscription, mot de passe oublié) ont été revus et finalisés dans Figma,
+                    assurant une interface utilisateur intuitive.
+                </p>
+            </div>
+        </section>
+
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 6 &ndash;
+                    <time datetime="2024-05-06">Lundi 21 octobre 2024</time>
+                </h3>
+                <p>Programmation de la conception</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Carnet des charges des pages à réaliser</li>
+                    <li>Début de la gestion de l'authentification</li>
+                    <li>Revue du format de connexion qui sera définitvement le numéro de téléphone.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 7 &ndash;
+                    <time datetime="2024-05-06">Lundi 28 octobre 2024</time>
+                </h3>
+                <p>Implémentation de la map</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Utilisation de Xcode pour faire le front-end de l'application</li>
+                    <li>Intégrer l'API Google Maps pour afficher une carte interactive</li>
+                    <li>Importer la bibliothèque `react-native-maps` pour la prise en charge des cartes dans React Native</li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+                <p>
+                    Installation et configuration de l'API Google Maps.
+                    Ajout de `react-native-maps` pour afficher les points de passage sur la carte.
+                    Modification de `Info.plist` pour demander les autorisations de localisation nécessaires.
+                </p>
+
+                <h4 class="title">Notes</h4>
+                <p>
+                    J'essaie d'intaller un service de géolocalisation mais cela nécessite une permission de l'utilisateur à travers
+                    le fichier Infos.plist.
+                </p>
+            </div>
+        </section>
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 8 &ndash;
+                    <time datetime="2024-05-06">Lundi 4 novembre 2024</time>
+                </h3>
+                <p>Conception - Gestion du StepCounter, home.tsx fontionnel</p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li>Création de la page d'accueil avec les features (données de l'utilisateur et accès à la page dicorver.tsx), page de profil</li>
+                    <li>Ajoute d'un compteur (ne fonctionne que si les permissions sont accepter et l'application active ou en errière plan) </li>
+                    <li>Utilisation de Chat pour définir comment le calories sont comptés en fonction de la taille de l'utilisateur (conversion ci-jointe)</li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+                <img src="images/step%20counter.png" alt="conversion step/calories" height="400">
+                <p>
+                    J'ai créer un design de home.tsx qui respecte les normes de l'application et qui permet d'accéder aux différentes pages qui répondront
+                    aux besoins de l'utilisateur. j'ai utilisé le Pedometer de 'expo-sensors' afin que l'application puissent elle-même compter les pas.
+                    J'ai établie les permissions grâce au Podfile.pfil .
+                </p>
+
+                <h4 class="title">Notes</h4>
+                <p>
+                    Je pense ajouter un accès auc données (de pas) déjà incluse dans le téléphone à traver l'appli Santé de ios,
+                    de cette facon l'utilisateur à accès aux pas de sa journée total.
+                    Ne pas oublier de demander sa taille à l'utilisateur.
+                </p>
+            </div>
+        </section>
+
+        <section class="week">
+            <header class="week-header">
+                <h3 class="week-title">Semaine 9 &ndash;
+                    <time datetime="2024-05-06">Lundi 11 novembre 2024</time>
+                </h3>
+                <p>Conception - Implémentation de code pour générer des parcours </p>
+            </header>
+            <div class="week-content">
+                <h4 class="title">Objectifs</h4>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+
+                <h4 class="title">Réalisations</h4>
+
+                <h4 class="title">Notes</h4>
+                ...
+                <p></p>
+            </div>
+        </section>
+
+
+    </section>
+</main>
+
+<footer class="page-footer">
+    <a href="https://github.com/oceane-hays/StepOn" target="_blank">Répertoire GitHub</a>
+    <p>Dernière mise à jour: 16 novembre 2024</p>
+</footer>
+
+<script>
+    const NB_WEEK = 13;
+    let projetStart = new Date("2024-09-09");
+    let current = (Date.now() - projetStart) / 1000 / 60 / 60 / 24 / 7;
+    let progress = Math.round((current/NB_WEEK) * 100);
+
+    let timeline = document.querySelector('.timeline');
+    timeline.style.background = `linear-gradient(to right, rgb(var(--accent)) ${progress}%, #d5d5d5 0%)`;
+</script>
+</body>
+
+</html>
