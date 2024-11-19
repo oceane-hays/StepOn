@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import MapView , {PROVIDER_GOOGLE}  from "react-native-maps";
-import GetLocation from 'react-native-get-location'
+import React, {useEffect, useState, useRef, useCallback} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import MapView from "react-native-maps";
+import GetLocation from 'react-native-get-location';
+import BottomSheetMap from "@/app/(component)/bottomSheetMap";
 
 
 const defaultLocation = {
@@ -11,46 +12,9 @@ const defaultLocation = {
     longitudeDelta: 0.0421,
 };
 
-GetLocation.getCurrentPosition({
-    enableHighAccuracy: true,
-    timeout: 60000,
-})
-
-    .then(location => {
-        console.log(location);
-    })
-    .catch(error => {
-        const { code, message } = error;
-        console.warn(code, message);
-    })
-
-const styles = StyleSheet.create({
-    container: {
-        ...StyleSheet.absoluteFillObject,
-        flex : 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    map: {
-        ...StyleSheet.absoluteFillObject,
-    },
-});
-
-
-export default function GoogleMapScreen(){
-    // const [permissionGranter, setPermissionGranter] = React.useState(false);
-    //
-    // useEffect(() => {
-    //     _getLocationPermission();
-    // }, [])
-    //
-    // async function getLocationPermission(){
-    //
-    // }
-    //
-    // if (!permissionGranter) return <View><Text>Veuillez acceptez l'accès à votre localisation</Text></View>
-
+export default function GoogleMapScreen() {
     const [location, setLocation] = useState(defaultLocation);
+
 
     useEffect(() => {
         // Tente d'obtenir la position actuelle
@@ -73,12 +37,33 @@ export default function GoogleMapScreen(){
             });
     }, []);
 
+
+
     return (
         <View style={styles.container}>
-        <MapView provider={MapView.PROVIDER_GOOGLE}
-    style={styles.map}
-    region={location}/>
-    </View>
-)
-};
+            <MapView
+                provider={MapView.PROVIDER_GOOGLE}
+                style={styles.map}
+                region={location}
+            />
+            <BottomSheetMap/>
+        </View>
+    );
+}
 
+const styles = StyleSheet.create({
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
+    },
+    contentContainer: {
+        flex: 1,
+        padding: 36,
+        alignItems: 'center',
+    },
+});

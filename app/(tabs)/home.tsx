@@ -1,46 +1,55 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { View, Image, StyleSheet, SafeAreaView, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native'
-import Calendar from '../(component)/calendar'
-import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-import {ArrowRight, LocateIcon, TimerIcon} from 'lucide-react-native'
-import { Pedometer } from 'expo-sensors'
-import Logo from '../(component)/logo'
-import Discover from '../(component)/discover'
+'use client';
 
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, SafeAreaView, Text,
+    TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import Calendar from '../(component)/calendar';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ArrowRight, LocateIcon, TimerIcon } from 'lucide-react-native';
+import { Pedometer } from 'expo-sensors';
+import Logo from '../(component)/logo';
+import Discover from '../(component)/discover';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function HomePage() {
-    const [pourcentage, setPourcentage] = useState(0)
-    const [time, setTime] = useState(0)
-    const [userName, setUserName] = useState("Jane")
+    const [pourcentage, setPourcentage] = useState(0);
 
-    const height = 169;
-    const strideLength = height * 0.414
-    const stepParKilometer = 1000 / strideLength
-    const [PedomaterAvailability, SetPedomaterAvailability] = useState("");
-    const [totalStep, setTotalStep] = useState(0)
+    const [userName, setUserName] = useState('Jane');
 
-    const Dist = totalStep / stepParKilometer;
-    const DistanceCovered : number = Number.parseInt(Dist.toFixed(2));
+    const height = 1.7; // in meters
+    const strideLength = height * 0.414;
+    const [PedomaterAvailability, SetPedomaterAvailability] = useState('');
+    const [totalStep, setTotalStep] = useState(0);
 
-    const caloriesBurnt = 60 * DistanceCovered;
+    const Dist = totalStep * strideLength / 1000; // in KM
+    const DistanceCovered: number = Number(Dist.toFixed(2));
+
+    // average walking
+    const ms = 1.34; // en m/s
+    const MET = 3.5
+
+    // Assume an average weight of 63 kg
+    const weight = 70; // kg
+    const time = Number((Dist * 1000 / ms / 3600).toFixed(2)) // in hours
+
+    // Calories burned
+    const caloriesBurnt = Number((time * MET * weight * 3.5  / 200 * 60).toFixed(0))
 
 
     useEffect(() => {
         const checkPermissions = async () => {
             const { status } = await Pedometer.requestPermissionsAsync();
             if (status === 'granted') {
-                SetPedomaterAvailability("Available");
+                SetPedomaterAvailability('Available');
                 subscribe();
             } else {
-                SetPedomaterAvailability("No, permission denied");
+                SetPedomaterAvailability('No, permission denied');
             }
         };
 
-        checkPermissions(); // Appel de la fonction async interne
+        checkPermissions();
     }, []);
-
 
     useEffect(() => {
         const subscription = Pedometer.watchStepCount(result => {
@@ -56,32 +65,33 @@ export default function HomePage() {
     }, [totalStep]);
 
     let subscribe = () => {
-        const subscription = Pedometer.watchStepCount((result) => {
+        const subscription = Pedometer.watchStepCount(result => {
             setTotalStep(result.steps);
         });
         Pedometer.isAvailableAsync().then(
-            (result) => {
+            result => {
                 SetPedomaterAvailability(String(result));
             },
-            (error) => {
+            error => {
                 SetPedomaterAvailability(error);
             }
         );
     };
 
-
+    const FloatingButton = ({ onPress }: { onPress: () => void }) => (
+        <TouchableOpacity style={styles.floatingButton} onPress={onPress}>
+            <MaterialIcons name="directions" size={24} color="white" />
+        </TouchableOpacity>
+    );
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
-                <ScrollView>
+                <FloatingButton onPress={() => console.log('New route')} />
 
+                <ScrollView>
                     <Logo />
-                    <Text>
-                        Is Pedometer available on the device: {PedomaterAvailability === "Permission denied"
-                        ? "No, permission denied."
-                        : PedomaterAvailability}
-                    </Text>
+
 
                     <View style={styles.header}>
                         <View>
@@ -99,12 +109,12 @@ export default function HomePage() {
                     <Calendar />
 
                     <View style={styles.placeholder}>
-
+                        {/*first*/}
                         <View style={styles.first}>
                             <AnimatedCircularProgress
                                 size={210}
                                 width={15}
-                                fill={pourcentage} // remplit en fonction du nombre de pas
+                                fill={pourcentage}
                                 rotation={0}
                                 tintColor="#ECA15A"
                                 backgroundColor="#f9dfb9"
@@ -118,15 +128,14 @@ export default function HomePage() {
                                 )}
                             </AnimatedCircularProgress>
 
-
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.dataButton}>
-                                    <LocateIcon/>
+                                    <LocateIcon />
                                     <Text style={styles.dataText}>{DistanceCovered} km</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={styles.dataButton}>
-                                    <TimerIcon/>
+                                    <TimerIcon />
                                     <Text style={styles.dataText}>{time}'</Text>
                                 </TouchableOpacity>
 
@@ -137,46 +146,62 @@ export default function HomePage() {
                             </View>
                         </View>
 
+                        {/*second*/}
                         <View style={styles.second}>
-                            <TouchableOpacity>
-                                <Text style={styles.secondPartText}>F I N D   A   N E W   W A Y</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={styles.third}>
-
-                            <View style={styles.thirdTitle}>
-                                <Text style={styles.thirdPartText}>Discover Montreal,</Text>
-                                <TouchableOpacity  style={styles.goInButton}>
-                                    {/*onPress={goInDiscover}*/}
-                                    <ArrowRight color="#5E83C0" size={30}/>
+                            <View style={styles.secondTitle}>
+                                <Text style={styles.secondPartText}>Discover Montreal,</Text>
+                                <TouchableOpacity>
+                                    <ArrowRight color="#5E83C0" size={30} />
                                 </TouchableOpacity>
                             </View>
+
                             <Discover/>
                         </View>
                     </View>
-
-
                 </ScrollView>
+
             </SafeAreaView>
         </SafeAreaProvider>
-
-    )
+    );
 }
+
+
+
+const Colors = {
+    primary: '#ECA15A',
+    secondary: '#4E8EF2',
+    background: '#fbf2ea',
+    textPrimary: '#000',
+    textSecondary: '#fff',
+};
+const ButtonBase = {
+    borderRadius: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    backgroundColor: Colors.primary,
+};
+const commonCardStyle = {
+    backgroundColor: Colors.background,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.textSecondary,
     },
     text: {
         fontSize: 20,
-        color: '#000',
+        color: Colors.textPrimary,
         fontWeight: 'bold',
     },
 
-    // welcome back ...,
-    header: {
+    header: { // welcome back ...,
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -184,43 +209,37 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     headerButton: {
-        height: 30,
-        borderRadius: 30,
+        height: 40,
+        borderRadius: 20,
         flexDirection: 'row',
-        backgroundColor: '#ECA15A',
+        backgroundColor: Colors.primary,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        paddingHorizontal: 10,
     },
     headerButtonImage: {
         height: 25,
         width: 25,
-        paddingLeft: 10
-
+        marginRight: 10,
     },
     headerButtonText: {
-        fontSize: 13,
-        color: '#000',
+        fontSize: 14,
+        color: Colors.textPrimary,
         fontWeight: 'bold',
-        paddingHorizontal: 10,
     },
 
-    // page principale qui contient first et second
+    // part which depends on the day on calendar
     placeholder: {
         alignItems: 'center',
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingHorizontal: 20,
         flex: 1,
     },
-    // premier carre d'information : circular progress, stats
+
+    // first quartet , circular progress + stats
     first: {
+        ...commonCardStyle,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        marginBottom: 20,
-        borderRadius: 30,
-        backgroundColor: '#fbf2ea',
     },
     innerCircle: {
         alignItems: 'center',
@@ -235,23 +254,15 @@ const styles = StyleSheet.create({
         width: 40,
         height: 30
     },
-
     buttonContainer: {
         justifyContent: 'center',
         marginLeft: 10,
     },
     dataButton: {
+        ...ButtonBase,
         alignItems: 'center',
-
         justifyContent: 'space-between',
-        backgroundColor: '#ECA15A',
-        borderRadius: 10,
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        marginVertical: 10,
-        marginHorizontal: 5,
-        width: '100%', // Assure une largeur uniforme (si le parent a une largeur spécifique)
-        height:80,    // Définit une hauteur fixe
+        width: '100%',
         opacity: 0.8,
     },
     dataText: {
@@ -260,42 +271,35 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 
-    // Deuxieme carre d'information : Trouver un nouveau parcours
+    // second quartet , discover your city
     second: {
-        alignItems: 'center',
-        width: '100%',
-        paddingHorizontal: 30,
-        paddingVertical: 20,
-        borderRadius: 20,
-        backgroundColor: '#fbf2ea',
-        // borderColor: '#4E8EF2',
-        // borderWidth : 2,
-    },
-    secondPartText: {
-        fontSize: 15,
-        color: '#4E8EF2',
-        fontWeight: 'bold',
-    },
-
-    // Troisième carré d'iformation : Discover Montreal
-    third: {
+        width: "100%",
         marginTop: 20,
-        paddingHorizontal: 20,
         paddingVertical: 20,
     },
-    thirdTitle: {
+    secondTitle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    thirdPartText: {
+    secondPartText: {
         fontSize: 20,
         color: '#000',
         fontWeight: 'bold',
     },
-    goInButton: {
+    floatingButton: {
         position: 'absolute',
-        top: 50,
-        left: 20,
-        zIndex: 1,
+        bottom: 50,
+        right: 30,
+        backgroundColor: '#007BFF',
+        borderRadius: 30,
+        width: 60,
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+
     },
 })
