@@ -2,10 +2,10 @@ import React, {useEffect, useState, useRef, useCallback} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { SearchBar } from 'react-native-elements';
+import SearchBar from "@/app/(component)/search";
 
 
-export default function BottomSheetMap() {
+export default function BottomSheetMap({ onPlaceSelected }: { onPlaceSelected: (location: { latitude: number; longitude: number }) => void }) {
     // ref
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -14,12 +14,9 @@ export default function BottomSheetMap() {
         console.log('handleSheetChanges', index);
     }, []);
 
-    const [search, setSearch] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
 
-    const updateSearch = (search : string) : void => {
-        setSearch(search);
-    };
-
+    const updateSearch = (searchQuery: string) : void => setSearchQuery(searchQuery);
 
     return (
 
@@ -29,6 +26,7 @@ export default function BottomSheetMap() {
                     onChange={handleSheetChanges}
                 >
                     <BottomSheetView style={styles.contentContainer}>
+                        <SearchBar/>
 
                     </BottomSheetView>
                 </BottomSheet>
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
 
     contentContainer: {
         flex: 1,
-        padding: 36,
-        alignItems: 'center',
+        width: '100%',
+        marginLeft: 10,
     },
 });
