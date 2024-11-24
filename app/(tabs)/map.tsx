@@ -83,7 +83,7 @@ export default function GoogleMapScreen() {
       <BottomSheetMap
         mapRef={mapRef}
         setDestination={setDestination}
-        currLocation={location}
+        currLocation={default_location}
       />
     </View>
   );

@@ -3,6 +3,7 @@ import { View, Image, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { WeatherCondition, weatherConditions } from "./WeatherConditions";
+import { WEATHER_API } from "@/services/WEATHER_API";
 
 interface WeatherData {
   temperature: number;
@@ -14,8 +15,8 @@ async function getWeatherData(
   longitude: number
 ): Promise<WeatherData | null> {
   try {
-    const apiKey = "KEY"; // Replace with your FreeWeather API key
-    const apiUrl = `https://api.freeweatherapi.com/v1/weather?lat=${latitude}&lon=${longitude}&apikey=${apiKey}`;
+    const apiKey = WEATHER_API; // Replace with your FreeWeather API key
+    const apiUrl = `https://api.freeweatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&aqi=no`;
 
     const response = await fetch(apiUrl);
 
