@@ -12,6 +12,17 @@ export default function ProfileScreen({ navigation } : any) {
         following: 567,
     };
 
+    const handleLogOut = async () => {
+        const code = verificationCode.join('');
+        console.log('Submitting code:', code);
+
+        if (!code) {
+            console.error('Verification code is empty');
+            return;
+        }
+        // ...
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -51,7 +62,7 @@ export default function ProfileScreen({ navigation } : any) {
                     <Text style={styles.placeholderText}>No recent activity</Text>
                 </View>
 
-                <TouchableOpacity style={styles.logoutButton} onPress={() => console.log('Logout pressed')}>
+                <TouchableOpacity style={styles.logoutButton} onPress={handleLogOut}>
                     <LogOut color="#5E83C0" size={20} />
                     <Text style={styles.logoutButtonText}>Log Out</Text>
                 </TouchableOpacity>

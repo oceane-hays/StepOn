@@ -43,6 +43,7 @@ export default function SMSVerificationScreen({goBack} : any) {
             <TouchableOpacity onPress={goBack} style={styles.backButton}>
                 <ArrowLeft color="#5E83C0" size={24} />
             </TouchableOpacity>
+
             <View style={styles.content}>
                 <Text style={styles.title}>Verify Your Number</Text>
                 <Text style={styles.subtitle}>Enter the 6-digit code sent to your phone</Text>

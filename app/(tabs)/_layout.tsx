@@ -11,6 +11,7 @@ import '@expo/vector-icons';
 export default function TabLayout() {
     const colorScheme = useColorScheme();
 
+    console.log('jhbfiusbf')
     return (
         <Tabs
             screenOptions={{

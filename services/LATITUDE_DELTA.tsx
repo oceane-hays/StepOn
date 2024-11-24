@@ -1,0 +1,1 @@
+export const LATITUDE_DELTA = 0.04;

@@ -2,19 +2,25 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import {View, Text, StyleSheet, TouchableOpacity, Button, Dimensions} from "react-native";
 import MapView from "react-native-maps";
 import BottomSheetMap from "@/app/(component)/bottomSheetMap";
-import {getCurrentLocation} from "@/services/locationservice";
+import MapViewDirections from 'react-native-maps-directions';
 import * as Location from 'expo-location';
 import { Marker } from "react-native-maps";
+import {GOOGLE_MAPS_API_KEY} from "@/services/GOOGLE_MAPS_API_KEY";
+import {LATITUDE_DELTA} from "@/services/LATITUDE_DELTA";
+import {LONGITUDE_DELTA} from "@/services/LONGITUDE_DELTA";
 
-const screen = Dimensions.get('window');
-const ASPECT_RATIO = screen.width / screen.height;
-const LATITUDE_DELTA = 0.04;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+const default_location : any = ({
+    latitude: 45.48833488659076,
+    longitude: -73.63675359307672,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+});
 
 export default function GoogleMapScreen() {
+    const mapRef : any = useRef();
+    const [destination, setDestination] = useState();
     const [location , setLocation]  = useState();
-    const [address, setAddress] = useState();
-
 
     useEffect(() => {
         const getPermissions = async () => {
@@ -43,19 +49,35 @@ export default function GoogleMapScreen() {
     }, []);
 
 
+    console.log(destination)
 
     return (
         <View style={styles.container}>
             <MapView
+                ref={mapRef}
                 provider={MapView.PROVIDER_GOOGLE}
                 style={styles.map}
-                initialRegion={location}>
-                {location !== undefined && (
-                    <Marker coordinate={location}/>
-                )}
-            </MapView>
-            <BottomSheetMap />
+                initialRegion={default_location}
+            >
 
+                {default_location !== undefined && (
+                    <Marker coordinate={default_location}/>
+                )}
+                {destination !== undefined && (
+                    <Marker coordinate={destination}/>
+                )}
+                {default_location && destination &&  (
+                    <MapViewDirections
+                        origin={default_location}
+                        destination={destination}
+                        apikey={GOOGLE_MAPS_API_KEY}
+                        strokeColor="orange"
+                        strokeWidth={4}
+                        onError={(error) => console.log('Directions error:', error)}
+                    />
+                ) }
+            </MapView>
+            <BottomSheetMap mapRef={mapRef} setDestination={setDestination}/>
         </View>
     );
 }

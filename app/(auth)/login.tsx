@@ -1,15 +1,17 @@
 import { Image, StyleSheet, Platform, SafeAreaView, View, TextInput, Button, Alert, TouchableOpacity, Text } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-import { FieldValue } from 'firebase/firestore';
+// import { FieldValue } from 'firebase/firestore';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import SMSVerificationScreen from "@/app/(auth)/smsVerification";
 
 export default function Login() {
-
     const isKnown = false;
     const [number, onChangeNumber] = React.useState('');
-    const onPress = () => Alert.alert('Simple Button pressed');
+    const handleSendCode = () => {
+        return <SMSVerificationScreen/>
+    };
 
     console.log("dingdong")
 
@@ -36,21 +38,21 @@ export default function Login() {
 
                 <TouchableOpacity style={styles.emailBouton}
                                   onPress={() => Alert.alert('Utilisez votre email')}>
-                    <Text style={styles.emailBoutonText}>ou, utiliser votre adresse email</Text>
+                    <Text style={styles.emailBoutonText}>or, use your email adress</Text>
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.bouton} onPress={onPress}>
-                    <Text style={styles.buttonText}>Envoyez code</Text>
+                <TouchableOpacity style={styles.bouton} onPress={handleSendCode}>
+                    <Text style={styles.buttonText}>Send code</Text>
                 </TouchableOpacity>
 
                 <View style={styles.separator2} />
 
-                <Text>ou, vous n'avez pas de compte</Text>
+                <Text>or, you don't have account</Text>
 
                 <TouchableOpacity style={styles.emailBouton}
                                   onPress={() => Alert.alert('Création de compte')}>
-                    <Text style={styles.emailBoutonText}>créer un compte</Text>
+                    <Text style={styles.emailBoutonText}>Sign In</Text>
                 </TouchableOpacity>
 
             </SafeAreaView>
