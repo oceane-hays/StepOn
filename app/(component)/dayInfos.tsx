@@ -1,9 +1,11 @@
 import React from "react";
 import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import Weather from "@/app/(component)/weather";
 
 export default function DayInfos(setLocation : any) {
     return (
         <View style={styles.container}>
+            <Weather weather={'Rain'} temperature={23} />
             <ImageBackground
                 source={require('./../../assets/images/sky.png')}
                 style={styles.background}
