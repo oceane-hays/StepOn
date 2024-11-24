@@ -4,7 +4,7 @@ import 'react-native-get-random-values';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {GOOGLE_MAPS_API_KEY} from "@/services/GOOGLE_MAPS_API_KEY";
 import {LATITUDE_DELTA} from "@/services/LATITUDE_DELTA";
-import {LONGITUDE_DELTA} from "@/services/LONGITUDE_DELTA";
+import {LONGITUDE_DELTA} from "@/services/LONGITUDE_DELTA.tsX";
 
 
 export default function SearchBar({ mapRef, setDestination } : any) {
