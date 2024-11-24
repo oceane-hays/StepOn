@@ -14,15 +14,20 @@ import {
 import Calendar from "../(component)/calendar";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ArrowRight, LocateIcon, TimerIcon } from "lucide-react-native";
+import {
+  ArrowRight,
+  Footprints,
+  LocateIcon,
+  TimerIcon,
+} from "lucide-react-native";
 import { Pedometer } from "expo-sensors";
 import Logo from "../(component)/logo";
 import Discover from "../(component)/discover";
 import { MaterialIcons } from "@expo/vector-icons";
-import Weather from "../(component)/weather";
 
 export default function HomePage() {
   const [pourcentage, setPourcentage] = useState(0);
+  const [goal, setGoal] = useState(10000);
 
   const [userName, setUserName] = useState("Jane");
 
@@ -70,8 +75,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const targetSteps = 10000;
-    setPourcentage((totalStep / targetSteps) * 100);
+    setPourcentage((totalStep / goal) * 100);
   }, [totalStep]);
 
   let subscribe = () => {
@@ -88,17 +92,9 @@ export default function HomePage() {
     );
   };
 
-  const FloatingButton = ({ onPress }: { onPress: () => void }) => (
-    <TouchableOpacity style={styles.floatingButton} onPress={onPress}>
-      <MaterialIcons name="directions" size={24} color="white" />
-    </TouchableOpacity>
-  );
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <FloatingButton onPress={() => console.log("New route")} />
-        <Weather temperature={23} weather="Rain" />
         <ScrollView>
           <Logo />
 
@@ -167,12 +163,34 @@ export default function HomePage() {
             {/*second*/}
             <View style={styles.second}>
               <View style={styles.secondTitle}>
-                <Text style={styles.secondPartText}>Discover Montreal,</Text>
+                <Text style={styles.text}>Set up your Goal</Text>
                 <TouchableOpacity>
                   <ArrowRight color="#5E83C0" size={30} />
                 </TouchableOpacity>
               </View>
+              <View style={styles.secondTitle}>
+                <View style={styles.infoRow}>
+                  <Footprints />
+                  <Text style={styles.infoText}>{goal}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                  <Image
+                    source={require("./../../assets/images/fire-icon.png")}
+                    style={styles.fireIcon}
+                  />
+                  <Text style={styles.infoText}>N/A</Text>
+                </View>
+              </View>
+            </View>
 
+            {/*third*/}
+            <View style={styles.third}>
+              <View style={styles.thirdTitle}>
+                <Text style={styles.text}>Discover Montreal,</Text>
+                <TouchableOpacity>
+                  <ArrowRight color="#5E83C0" size={30} />
+                </TouchableOpacity>
+              </View>
               <Discover />
             </View>
           </View>
@@ -199,7 +217,6 @@ const ButtonBase = {
   backgroundColor: Colors.primary,
 };
 const commonCardStyle = {
-  backgroundColor: Colors.background,
   borderRadius: 20,
   paddingHorizontal: 20,
   paddingVertical: 20,
@@ -253,6 +270,7 @@ const styles = StyleSheet.create({
   // first quartet , circular progress + stats
   first: {
     ...commonCardStyle,
+    backgroundColor: Colors.background,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -287,34 +305,40 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  // second quartet , discover your city
+  // third quartet , discover your city
   second: {
+    ...commonCardStyle,
+    backgroundColor: "#fff",
+    width: "100%",
+    marginTop: 20,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  secondTitle: {
+    paddingVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  infoText: {
+    marginLeft: 8,
+    fontSize: 16,
+  },
+
+  // third quartet , discover your city
+  third: {
     width: "100%",
     marginTop: 20,
     paddingVertical: 20,
   },
-  secondTitle: {
+  thirdTitle: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  secondPartText: {
-    fontSize: 20,
-    color: "#000",
-    fontWeight: "bold",
-  },
-  floatingButton: {
-    position: "absolute",
-    bottom: 50,
-    right: 30,
-    backgroundColor: "#007BFF",
-    borderRadius: 30,
-    width: 60,
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
   },
 });

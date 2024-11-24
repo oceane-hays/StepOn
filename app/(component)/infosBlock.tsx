@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {LocateIcon, TimerIcon} from "lucide-react-native"; // Assuming you're using Expo for icons
+import {Footprints, LocateIcon, TimerIcon} from "lucide-react-native"; // Assuming you're using Expo for icons
 
 interface InformationBlockProps {
     duration?: string;
@@ -25,12 +25,17 @@ const InformationBlock: React.FC<InformationBlockProps> = ({ duration, distance,
                 <Image source={require('./../../assets/images/fire-icon.png')} style={styles.fireIcon} />
                 <Text style={styles.infoText}>{duration || 'N/A'}</Text>
             </View>
+            <View style={styles.infoRow}>
+                <Footprints size={24} />
+                <Text style={styles.infoText}>{duration || 'N/A'}</Text>
+            </View>
             <TouchableOpacity style={styles.startButton} onPress={onStart}>
                 <Text style={styles.startButtonText}>Start</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.saveButton} onPress={onSaveForLater}>
                 <Text style={styles.saveButtonText}>Save for later</Text>
             </TouchableOpacity>
+
         </View>
     );
 };
@@ -40,8 +45,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 16,
         borderRadius: 8,
-        marginTop: 150,
-        shadowColor: "#000",
+        marginTop: 20,
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.5,
         shadowRadius: 3,
