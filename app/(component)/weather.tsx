@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Image, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { WeatherCondition, weatherConditions } from "./WeatherConditions";
@@ -74,7 +74,12 @@ function Weather({ currLocation }: any) {
       </View>
       <View>
         <Text style={styles.tempText}>{temperature}˚</Text>
-        {weatherConditions[weather].icon}
+        <Image
+          source={require("./../../assets/images/" +
+            weatherConditions[weather].icon)}
+          style={styles.logo}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
@@ -90,6 +95,10 @@ const styles = StyleSheet.create({
   tempText: {
     fontSize: 72,
     color: "#fff",
+  },
+  logo: {
+    width: 100,
+    height: 90,
   },
   bodyContainer: {
     flex: 2,
