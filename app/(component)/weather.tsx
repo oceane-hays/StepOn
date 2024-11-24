@@ -16,8 +16,8 @@ async function getWeatherData(
 ): Promise<WeatherData | null> {
   try {
     const apiKey = WEATHER_API; // Replace with your FreeWeather API key
-    const apiUrl = `https://api.freeweatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&aqi=no`;
-
+    const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&aqi=no`;
+    console.log(apiUrl)
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
@@ -27,8 +27,8 @@ async function getWeatherData(
     const data = await response.json();
 
     // Extracting required information
-    const temperature = data?.main?.temp; // Assuming the API provides temp under `main.temp`
-    const weatherDescription = data?.weather?.[0]?.description; // Assuming the weather description is under `weather[0].description`
+    const temperature = data?.current?.temp_c; // Assuming the API provides temp under `main.temp`
+    const weatherDescription = data?.current?.condition?.text; // Assuming the weather description is under `weather[0].description`
 
     if (temperature !== undefined && weatherDescription) {
       return {
@@ -49,7 +49,9 @@ function Weather({ currLocation }: any) {
   const [weather, setWeather] = useState("Rain");
   const [temperature, setTemperature] = useState(23);
 
+
   useEffect(() => {
+
     getWeatherData(currLocation.latitude, currLocation.longitude)
       .then((weather) => {
         if (weather) {
@@ -76,8 +78,7 @@ function Weather({ currLocation }: any) {
       <View>
         <Text style={styles.tempText}>{temperature}˚</Text>
         <Image
-          source={require("./../../assets/images/" +
-            weatherConditions[weather].icon)}
+          source={require("./../../assets/images/sun.png" )}
           style={styles.logo}
           resizeMode="contain"
         />
