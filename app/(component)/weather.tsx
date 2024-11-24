@@ -1,46 +1,84 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
-import { weatherConditions } from "./WeatherConditions";
+import { WeatherCondition, weatherConditions } from "./WeatherConditions";
 
-interface WeatherProps {
-  weather: string; // Ensure it's a valid key of weatherConditions
+interface WeatherData {
   temperature: number;
+  weather: string;
 }
 
-const Weather = ({ weather, temperature }: WeatherProps) => {
-  const condition = weatherConditions[weather] || {
-    color: "#b0bec5", // Default background color
-    title: "Unknown",
-    subtitle: "Unable to fetch weather data.",
-    icon: "alert-circle-outline",
-  };
+async function getWeatherData(
+  latitude: number,
+  longitude: number
+): Promise<WeatherData | null> {
+  try {
+    const apiKey = "KEYKEY"; // Replace with your FreeWeather API key
+    const apiUrl = `https://api.freeweatherapi.com/v1/weather?lat=${latitude}&lon=${longitude}&apikey=${apiKey}`;
+
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`Error fetching weather data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Extracting required information
+    const temperature = data?.main?.temp; // Assuming the API provides temp under `main.temp`
+    const weatherDescription = data?.weather?.[0]?.description; // Assuming the weather description is under `weather[0].description`
+
+    if (temperature !== undefined && weatherDescription) {
+      return {
+        temperature,
+        weather: weatherDescription,
+      };
+    } else {
+      console.error("Unexpected data format:", data);
+      return null;
+    }
+  } catch (error) {
+    console.error("Failed to fetch weather data:", error);
+    return null;
+  }
+}
+
+function Weather({ currLocation }: any) {
+  const [weather, setWeather] = useState("Rain");
+  const [temperature, setTemperature] = useState(23);
+
+  useEffect(() => {
+    getWeatherData(currLocation.latitude, currLocation.longitude)
+      .then((weather) => {
+        if (weather) {
+          setTemperature(weather.temperature);
+          console.log(weather.weather);
+          if (weather.weather in weatherConditions) {
+            setWeather(weather.weather);
+          } else {
+            setWeather("Rain");
+          }
+        }
+      })
+      .catch(() => {});
+  }, [currLocation]);
 
   return (
-    <View
-      style={[
-        styles.weatherContainer,
-        { backgroundColor: weatherConditions[weather].color },
-      ]}
-    >
-      <View style={styles.headerContainer}>
-        <MaterialCommunityIcons
-          size={72}
-          name={weatherConditions[weather].icon}
-          color={"#fff"}
-        />
-        <Text style={styles.tempText}>{temperature}˚</Text>
-      </View>
-      <View style={styles.bodyContainer}>
+    <View style={styles.weatherContainer}>
+      <View>
         <Text style={styles.title}>{weatherConditions[weather].title}</Text>
         <Text style={styles.subtitle}>
           {weatherConditions[weather].subtitle}
         </Text>
       </View>
+      <View>
+        <Text style={styles.tempText}>{temperature}˚</Text>
+        {weatherConditions[weather].icon}
+      </View>
     </View>
   );
-};
+}
 
 Weather.propTypes = {
   temperature: PropTypes.number.isRequired,
@@ -49,9 +87,6 @@ Weather.propTypes = {
 
 const styles = StyleSheet.create({
   weatherContainer: {
-    flex: 1,
-  },
-  headerContainer: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
