@@ -1,5 +1,5 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import {Tabs, useRouter} from 'expo-router';
+import React, {useEffect} from 'react';
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import '@expo/vector-icons';
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
+    const router = useRouter()
 
     console.log('jhbfiusbf')
     return (
