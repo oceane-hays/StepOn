@@ -10,7 +10,7 @@ export default function DayInfos({ currLocation }: any) {
         style={styles.background}
         imageStyle={styles.image}
       >
-        <Weather currLocation={location} />
+        <Weather currLocation={currLocation} />
         <View style={styles.content}>
           <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
             Montreal,{" "}

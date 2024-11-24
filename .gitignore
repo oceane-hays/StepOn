@@ -2,7 +2,6 @@
 
 # dependencies
 node_modules/
-
 # Expo
 .expo/
 dist/
@@ -36,3 +35,6 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+#Keys
+services/GOOGLE_MAPS_API_KEY.tsx

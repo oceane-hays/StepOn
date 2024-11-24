@@ -14,7 +14,7 @@ async function getWeatherData(
   longitude: number
 ): Promise<WeatherData | null> {
   try {
-    const apiKey = "KEYKEY"; // Replace with your FreeWeather API key
+    const apiKey = "KEY"; // Replace with your FreeWeather API key
     const apiUrl = `https://api.freeweatherapi.com/v1/weather?lat=${latitude}&lon=${longitude}&apikey=${apiKey}`;
 
     const response = await fetch(apiUrl);
@@ -79,11 +79,6 @@ function Weather({ currLocation }: any) {
     </View>
   );
 }
-
-Weather.propTypes = {
-  temperature: PropTypes.number.isRequired,
-  weather: PropTypes.string,
-};
 
 const styles = StyleSheet.create({
   weatherContainer: {
