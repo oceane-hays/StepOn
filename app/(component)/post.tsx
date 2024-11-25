@@ -2,8 +2,8 @@ import React from 'react';
 import {View, Image, StyleSheet, Text, TouchableOpacity, Dimensions, SafeAreaView} from 'react-native';
 import { MapPin, Footprints, Clock, User } from 'lucide-react-native';
 import {InfoItem} from "@/app/(component)/infoItem";
-import {formattedTime} from "@/app/(component)/formattedTime";
-import {formattedSteps} from "@/app/(component)/formattedSteps";
+import {formattedTime} from "@/services/formattedTime";
+import {formattedSteps} from "@/services/formattedSteps";
 
 export default function Post({ image, location, steps, name, time }: any) {
 

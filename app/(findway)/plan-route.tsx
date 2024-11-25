@@ -24,10 +24,11 @@ export default function PlanRoute() {
 
                 {/* Header */}
                 <View style={styles.header}>
-                    <TouchableOpacity>
-                        <ArrowLeft color={Colors.orange_fonce} size={30}/>
+                    <TouchableOpacity style={styles.button}>
+                        <ArrowLeft size={30} color={Colors.orange_fonce} />
                     </TouchableOpacity>
-                    <Text style={styles.headerText}>Plan your Route</Text>
+                    <Text style={styles.title}>Plan Your Route</Text>
+                    <View style={styles.placeholder} />
                 </View>
             </View>
 
@@ -79,14 +80,15 @@ const styles = StyleSheet.create({
     },
     header: {
         ...card,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
+        marginBottom: 20,
     },
-    headerText: {
+    title: {
         fontSize: 24,
-        color : Colors.orange_fonce,
         fontWeight: 'bold',
+        color: Colors.orange_fonce,
     },
     iconButton: {
         padding: 8,
@@ -117,6 +119,18 @@ const styles = StyleSheet.create({
     outlineButtonText: {
         fontSize: 16,
         color: Colors.orange_fonce,
+    },
+    button: {
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        padding: 10,
+        shadowColor: Colors.gris_fonce,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+    },
+    placeholder: {
+        width: 50, // Match the width of the button
     },
 });
 

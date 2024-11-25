@@ -23,8 +23,6 @@ import {
 import { Pedometer } from "expo-sensors";
 import Logo from "../(component)/logo";
 import Discover from "../(component)/discover";
-import { MaterialIcons } from "@expo/vector-icons";
-import Weather from "@/app/(component)/weather";
 
 export default function HomePage() {
   const [pourcentage, setPourcentage] = useState(0);

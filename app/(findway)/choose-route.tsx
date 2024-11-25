@@ -1,11 +1,9 @@
-import React, {useRef} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import PathCard from "@/app/(component)/pathCard";
 import Swiper from "react-native-swiper";
-import {ArrowLeft, ArrowRight} from "lucide-react-native";
-import {Colors} from "@/services/COLORS";
-
-
+import { ArrowLeft, ArrowRight } from "lucide-react-native";
+import { Colors } from "@/services/COLORS";
 
 export default function ChooseRoute() {
     const swiperRef = useRef<Swiper>(null);
@@ -13,13 +11,12 @@ export default function ChooseRoute() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
-
                 <View style={styles.header}>
-                    <View style={styles.button}>
-                        <ArrowLeft size={30} color={Colors.orange_fonce}/>
-                    </View>
-
+                    <TouchableOpacity style={styles.button}>
+                        <ArrowLeft size={30} color={Colors.orange_fonce} />
+                    </TouchableOpacity>
                     <Text style={styles.title}>Choose Your Path</Text>
+                    <View style={styles.placeholder} />
                 </View>
 
                 <Swiper
@@ -28,15 +25,25 @@ export default function ChooseRoute() {
                     showsButtons={false}
                     loop={true}
                     index={1}
+                    showsPagination={false}
                 >
-                    <PathCard/>
-                    <PathCard/>
-                    <PathCard/>
+                    <PathCard />
+                    <PathCard />
+                    <PathCard />
+
                 </Swiper>
 
-                <View style={styles.header}>
+                <View style={styles.footer}>
                     <TouchableOpacity onPress={() => swiperRef.current?.scrollBy(-1)} style={styles.button}>
                         <ArrowLeft size={30} color={Colors.bleu_fonce} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity  style={{
+                        ...styles.button,
+                        padding: 15,
+                        backgroundColor: Colors.bleu_clair,
+                    }}>
+                        <Text style={{color: '#fff', fontWeight: 'bold'}}>Save for later</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => swiperRef.current?.scrollBy(1)} style={styles.button}>
@@ -46,7 +53,7 @@ export default function ChooseRoute() {
             </View>
         </SafeAreaView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -57,7 +64,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
     },
-
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -67,23 +73,18 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginLeft: 10,
-        color: Colors.orange_fonce
+        color: Colors.orange_fonce,
     },
     swiper: {
         flex: 1,
     },
-    buttonWrapper: {
-        backgroundColor: 'transparent',
-        flexDirection: 'row',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        flex: 1,
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-        justifyContent: 'space-between',
+    footer: {
         alignItems: 'center',
+        width: '80%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignSelf: 'center',
+        marginBottom: 20,
     },
     button: {
         borderRadius: 10,
@@ -93,6 +94,9 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.3,
         shadowRadius: 3,
-    }
+    },
+    placeholder: {
+        width: 50, // Match the width of the button
+    },
 });
 
