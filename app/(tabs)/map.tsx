@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import {
   View,
-  Text,
   StyleSheet,
-  TouchableOpacity,
-  Button,
-  Dimensions,
 } from "react-native";
 import MapView from "react-native-maps";
 import BottomSheetMap from "@/app/(component)/bottomSheetMap";
@@ -15,7 +11,6 @@ import { Marker } from "react-native-maps";
 import { GOOGLE_MAPS_API_KEY } from "@/services/GOOGLE_MAPS_API_KEY";
 import { LATITUDE_DELTA } from "@/services/LATITUDE_DELTA";
 import { LONGITUDE_DELTA } from "@/services/LONGITUDE_DELTA";
-import Weather from "@/app/(component)/weather";
 
 const default_location: any = {
   latitude: 45.48833488659076,
@@ -88,6 +83,7 @@ export default function GoogleMapScreen() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

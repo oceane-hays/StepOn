@@ -1,15 +1,12 @@
 import React from 'react';
 import {View, Image, StyleSheet, Text, TouchableOpacity, Dimensions, SafeAreaView} from 'react-native';
 import { MapPin, Footprints, Clock, User } from 'lucide-react-native';
+import {InfoItem} from "@/app/(component)/infoItem";
+import {formattedTime} from "@/app/(component)/formattedTime";
+import {formattedSteps} from "@/app/(component)/formattedSteps";
 
 export default function Post({ image, location, steps, name, time }: any) {
-    const formattedTime = (totalMinutes: number) => {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        return `${hours}h${minutes.toString().padStart(2, '0')}min`;
-    };
 
-    const formattedSteps = new Intl.NumberFormat('fr-FR').format(steps);
 
     return (
         <View style={styles.container}>
@@ -18,7 +15,7 @@ export default function Post({ image, location, steps, name, time }: any) {
                 <View style={styles.contentContainer}>
                     <View style={styles.infoContainer}>
                         <InfoItem icon={<MapPin size={16} color="#666" />} text={location} />
-                        <InfoItem icon={<Footprints size={16} color="#666" />} text={`${formattedSteps} steps`} />
+                        <InfoItem icon={<Footprints size={16} color="#666" />} text={`${formattedSteps(steps)} steps`} />
                         <InfoItem icon={<Clock size={16} color="#666" />} text={formattedTime(time)} />
                     </View>
                     <TouchableOpacity style={styles.button}>
@@ -34,14 +31,7 @@ export default function Post({ image, location, steps, name, time }: any) {
     );
 }
 
-function InfoItem({ icon, text }: { icon: JSX.Element; text: string }) {
-    return (
-        <View style={styles.infoItem}>
-            {icon}
-            <Text style={styles.infoText}>{text}</Text>
-        </View>
-    );
-}
+
 
 const { width } = Dimensions.get('window');
 

@@ -78,7 +78,7 @@ function Weather({ currLocation }: any) {
       <View>
         <Text style={styles.tempText}>{temperature}˚</Text>
         <Image
-          source={require("./../../assets/images/sun.png" )}
+          source={require("../../assets/images/weather/sun.png" )}
           style={styles.logo}
           resizeMode="contain"
         />

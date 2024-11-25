@@ -15,7 +15,7 @@ export default function BottomSheetMap({
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // Snap points for BottomSheet
-  const snapPoints = ["10%", "20%", "50%", "90%"]; // Adjust percentages as needed
+  const snapPoints = ["20%", "50%", "90%"]; // Adjust percentages as needed
 
   // Callback for sheet changes
   const handleSheetChanges = useCallback((index: number) => {
