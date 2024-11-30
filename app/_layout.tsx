@@ -7,13 +7,14 @@ import {useEffect, useState} from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import {NavigationContainer} from "expo-router/build/fork/NavigationContainer";
+import TabLayout from "@/app/(tabs)/_layout";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
 
-  const router = useRouter()
   const isConnected = useState<boolean>(false);
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
@@ -32,6 +33,19 @@ export default function RootLayout() {
 
 
   return (
+      // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      //   <NavigationContainer>
+      //     {isConnected ? (
+      //         <TabLayout />
+      //     ) : (
+      //         <Stack.Navigator>
+      //           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      //         </Stack.Navigator>
+      //     )}
+      //   </NavigationContainer>
+      //   <StatusBar style="auto" />
+      // </ThemeProvider>
+
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack initialRouteName={isConnected ? '(tabs)' : '(auth)'}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />

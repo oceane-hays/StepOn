@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView} from 'react-native';
-import {SafeAreaProvider} from "react-native-safe-area-context";
 import Logo from "@/app/(component)/logo";
 import Filter from "@/app/(component)/filter";
-import {ArrowLeft} from "lucide-react-native";
 import {Colors} from "@/services/COLORS";
-import {height} from "@/services/height";
 
 export default function PlanRoute() {
   const [steps, setSteps] = useState(1000);
@@ -24,9 +21,6 @@ export default function PlanRoute() {
 
                 {/* Header */}
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.button}>
-                        <ArrowLeft size={30} color={Colors.orange_fonce} />
-                    </TouchableOpacity>
                     <Text style={styles.title}>Plan Your Route</Text>
                     <View style={styles.placeholder} />
                 </View>
@@ -80,7 +74,6 @@ const styles = StyleSheet.create({
     },
     header: {
         ...card,
-        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 20,

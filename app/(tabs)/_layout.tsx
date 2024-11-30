@@ -1,49 +1,76 @@
-import { Tabs, useRouter } from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
-
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-import { useColorScheme } from "@/hooks/useColorScheme";
 import "@expo/vector-icons";
+import {TouchableOpacity, View, Image} from "react-native";
+import {Colors} from "@/services/COLORS";
+
+const customTabBarButton = ({children, onPress} : any) => (
+    <TouchableOpacity
+        onPress={onPress}
+        style={{
+        top: -10,
+        justifyContent: "center",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 3.84,
+    }}>
+        <View style={{
+            width: 70,
+            height: 70,
+            borderRadius:35,
+            paddingBottom: 10,
+            backgroundColor: Colors.orange_fonce,
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+        }}>
+            {children}
+        </View>
+    </TouchableOpacity>
+)
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  const router = useRouter();
 
-  console.log("jhbfiusbf");
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "#5E83C0",
-        tabBarInactiveTintColor: "#8e8e8e",
-        headerShown: false,
-      }}
-    >
+
+      <Tabs
+          screenOptions={{
+              tabBarActiveTintColor: "#5E83C0",
+              tabBarInactiveTintColor: "#8e8e8e",
+              tabBarStyle: {
+                  backgroundColor: "#fff",
+                  borderRadius : 20,
+              },
+              headerShown: false,
+          }}
+      >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
-          ),
+            title: "Home",
+            tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon
+                    name={focused ? "home" : "home-outline"}
+                    color={color}
+                />
+            ),
+
         }}
       />
 
       <Tabs.Screen
-        name="map"
+        name="route"
         options={{
-          title: "Map",
-          tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons
-              name={focused ? "map-marker" : "map"}
-              color={color}
-              size={24} // Ajustez la taille de l'icône
-            />
-          ),
+            title: "",
+            tabBarIcon: () => (
+                <Image source={require('./../../assets/images/location.png')}
+                       style={{height: 40, width: 40, alignSelf: 'center'}}/>
+            ),
+            tabBarButton: (props) => (
+                customTabBarButton({... props}))
         }}
       />
       <Tabs.Screen
@@ -58,6 +85,19 @@ export default function TabLayout() {
             />
           ),
         }}
+      />
+      <Tabs.Screen
+          name="discoverSrcreen"
+          options={{
+              title: "Discover",
+              tabBarIcon: ({ color, focused }) => (
+                  <MaterialCommunityIcons
+                      name={focused ? "web" : "web"}
+                      color={color}
+                      size={24} // Ajustez la taille de l'icône
+                  />
+              ),
+          }}
       />
     </Tabs>
   );

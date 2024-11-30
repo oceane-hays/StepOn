@@ -1,22 +1,44 @@
-import React, { useRef } from "react";
-import { SafeAreaView, View, StyleSheet, TouchableOpacity, Text, Dimensions } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import React, {useEffect, useRef, useState} from "react";
+import { SafeAreaView, View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import MapView, { Marker, Region } from "react-native-maps";
 import { LATITUDE_DELTA } from "@/services/LATITUDE_DELTA";
 import { LONGITUDE_DELTA } from "@/services/LONGITUDE_DELTA";
 import { Colors } from "@/services/COLORS";
 import { CircularItems } from "@/app/(component)/RouteComponent/CircularItems";
-import { Footprints, MapPin, TimerIcon } from "lucide-react-native";
-import { formattedSteps } from "@/services/formattedSteps";
+import { Footprints, MapPin, Timer } from "lucide-react-native";
+import { GenerateRoundTrip } from "@/app/(component)/RouteComponent/generateRoute";
+import MapViewDirections from "react-native-maps-directions";
+import {GOOGLE_MAPS_API_KEY} from "@/services/GOOGLE_MAPS_API_KEY";
 
-const DEFAULT_LOCATION: Region = {
+
+const DEFAULT_LOCATION : Region = {
     latitude: 45.48833488659076,
     longitude: -73.63675359307672,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
 };
 
+const route = GenerateRoundTrip(DEFAULT_LOCATION, 1.5);
+
 export default function MapRoute() {
     const mapRef = useRef<MapView>(null);
+    const [destinations, setDestinations] = useState<Array<{latitude: number, longitude: number}>>([]);
+
+    useEffect(() => {
+        if (route.length > 1) {
+            const newDestinations = [];
+            for (let i = 1; i < route.length; i++) {
+                if ('center' in route[i]) {
+                    console.log(route[i].longitude);
+                    newDestinations.push({
+                        latitude: route[i].center,
+                        longitude: route[i].longitude
+                    });
+                }
+            }
+            setDestinations(newDestinations);
+        }
+    }, []);
 
     const handleTakeABreak = () => {
         console.log("Take a Break pressed");
@@ -35,12 +57,40 @@ export default function MapRoute() {
                     ref={mapRef}
                     provider={MapView.PROVIDER_GOOGLE}
                     style={styles.map}
-                    initialRegion={DEFAULT_LOCATION}
-                />
+                    initialRegion={{
+                        latitude: route[0].latitude,
+                        longitude: route[0].longitude,
+                        latitudeDelta: route[0].latitudeDelta,
+                        longitudeDelta: route[0].longitudeDelta,
+                    }}
+                >
+                    {destinations.map((point, index) => (
+                        <Marker
+                            key={index}
+                            coordinate={{ latitude: point.latitude, longitude: point.longitude }}
+                            title={`Point ${index}`}
+                        />
+                    ))}
+                    {destinations.map((destination, index) => {
+                        if (index === 0) return null;
+                        return (
+                            <MapViewDirections
+                                key={index}
+                                origin={destinations[index - 1]}
+                                destination={destination}
+                                apikey={GOOGLE_MAPS_API_KEY}
+                                strokeColor="orange"
+                                strokeWidth={4}
+                                onError={(error) => console.log("Directions error:", error)}
+                            />
+                        );
+                    })}
+                </MapView>
+
                 <View style={styles.cardContainer}>
                     <View style={{...styles.card, padding: 20, width: '85%', alignSelf:'center'}}>
                         <CircularItems icon={<Footprints color={Colors.orange_fonce} />} numb={0} pourcent={10} />
-                        <CircularItems icon={<TimerIcon color={Colors.orange_fonce} />} numb={0} pourcent={30} />
+                        <CircularItems icon={<Timer color={Colors.orange_fonce} />} numb={0} pourcent={30} />
                         <CircularItems icon={<MapPin color={Colors.orange_fonce} />} numb={0} pourcent={60} />
                     </View>
 

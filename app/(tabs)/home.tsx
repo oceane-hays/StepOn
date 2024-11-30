@@ -1,64 +1,51 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import {
   View,
   Image,
   StyleSheet,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native";
-import Calendar from "../(component)/calendar";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import {
-  ArrowRight,
-  Footprints,
-  LocateIcon,
-  TimerIcon,
-} from "lucide-react-native";
+import {ArrowRight, Footprints, LocateIcon, TimerIcon} from "lucide-react-native";
 import { Pedometer } from "expo-sensors";
-import Logo from "../(component)/logo";
-import Discover from "../(component)/discover";
+import LottieView from 'lottie-react-native';
+import Logo from "@/app/(component)/logo";
+import Discover from "@/app/(component)/discover";
+import Calendar from "@/app/(component)/calendar";
+
+
 
 export default function HomePage() {
-  const [pourcentage, setPourcentage] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+  const [isCounting, setIsCounting] = useState(false);
   const [goal, setGoal] = useState(10000);
-
   const [userName, setUserName] = useState("Jane");
+  const [totalSteps, setTotalSteps] = useState(0);
+  const [pedometerAvailability, setPedometerAvailability] = useState("");
 
   const height = 1.7; // in meters
   const strideLength = height * 0.414;
-  const [PedomaterAvailability, SetPedomaterAvailability] = useState("");
-  const [totalStep, setTotalStep] = useState(0);
+  const distanceKm = (totalSteps * strideLength) / 1000;
+  const distanceCovered = Number(distanceKm.toFixed(2));
 
-  const Dist = (totalStep * strideLength) / 1000; // in KM
-  const DistanceCovered: number = Number(Dist.toFixed(2));
-
-  // average walking
-  const ms = 1.34; // en m/s
+  const averageSpeed = 1.34; // m/s
   const MET = 3.5;
-
-  // Assume an average weight of 63 kg
   const weight = 70; // kg
-  const time = Number(((Dist * 1000) / ms / 3600).toFixed(2)); // in hours
-
-  // Calories burned
-  const caloriesBurnt = Number(
-    (((time * MET * weight * 3.5) / 200) * 60).toFixed(0)
-  );
+  const timeHours = Number((distanceKm * 1000 / averageSpeed / 3600).toFixed(2));
+  const caloriesBurnt = Number((timeHours * MET * weight * 3.5 / 200 * 60).toFixed(0));
 
   useEffect(() => {
     const checkPermissions = async () => {
       const { status } = await Pedometer.requestPermissionsAsync();
       if (status === "granted") {
-        SetPedomaterAvailability("Available");
-        subscribe();
+        setPedometerAvailability("Available");
+        subscribeToPedometer();
       } else {
-        SetPedomaterAvailability("No, permission denied");
+        setPedometerAvailability("No, permission denied");
       }
     };
 
@@ -66,49 +53,32 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    setPercentage((totalSteps / goal) * 100);
+  }, [totalSteps, goal]);
+
+  const subscribeToPedometer = () => {
     const subscription = Pedometer.watchStepCount((result) => {
-      setTotalStep(result.steps);
+      setTotalSteps(result.steps);
+      setIsCounting(true);
     });
 
     return () => subscription && subscription.remove();
-  }, []);
-
-  useEffect(() => {
-    setPourcentage((totalStep / goal) * 100);
-  }, [totalStep]);
-
-  let subscribe = () => {
-    const subscription = Pedometer.watchStepCount((result) => {
-      setTotalStep(result.steps);
-    });
-    Pedometer.isAvailableAsync().then(
-      (result) => {
-        SetPedomaterAvailability(String(result));
-      },
-      (error) => {
-        SetPedomaterAvailability(error);
-      }
-    );
   };
 
   return (
-    <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <Logo />
 
           <View style={styles.header}>
-            <View>
-              <Text style={styles.text}>Welcome back {userName},</Text>
-            </View>
-
+            <Text style={styles.text}>Welcome back {userName},</Text>
             <TouchableWithoutFeedback>
               <View style={styles.headerButton}>
                 <Image
-                  source={require("./../../assets/images/step.png")}
-                  style={styles.headerButtonImage}
+                    source={require("../../assets/images/step.png")}
+                    style={styles.headerButtonImage}
                 />
-                <Text style={styles.headerButtonText}>{totalStep}</Text>
+                <Text style={styles.headerButtonText}>{totalSteps}</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -116,50 +86,56 @@ export default function HomePage() {
           <Calendar />
 
           <View style={styles.placeholder}>
-            {/*first*/}
             <View style={styles.first}>
               <AnimatedCircularProgress
-                size={210}
-                width={15}
-                fill={pourcentage}
-                rotation={0}
-                tintColor="#ECA15A"
-                backgroundColor="#f9dfb9"
-                lineCap="round"
+                  size={210}
+                  width={15}
+                  fill={percentage}
+                  rotation={0}
+                  tintColor="#ECA15A"
+                  backgroundColor="#f9dfb9"
+                  lineCap="round"
               >
                 {() => (
-                  <View style={styles.innerCircle}>
-                    <Image
-                      source={require("./../../assets/images/step.png")}
-                      style={styles.image}
-                    />
-                    <Text style={styles.text}>{totalStep}</Text>
-                  </View>
+                    <View style={styles.innerCircle}>
+                      {isCounting ? (
+                          <LottieView
+                              autoPlay
+                              style={{height: 110, width: 110}}
+                              source={require("../../assets/images/walking.json")}
+                          />
+                      ) : (
+                          <Image
+                              source={require('../../assets/images/stop.png')}
+                              style={{height: 90, width: 90}}
+                          />
+                      )}
+                      <Text style={styles.text}>{totalSteps}</Text>
+                    </View>
                 )}
               </AnimatedCircularProgress>
 
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.dataButton}>
                   <LocateIcon />
-                  <Text style={styles.dataText}>{DistanceCovered} km</Text>
+                  <Text style={styles.dataText}>{distanceCovered} km</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.dataButton}>
                   <TimerIcon />
-                  <Text style={styles.dataText}>{time}'</Text>
+                  <Text style={styles.dataText}>{timeHours} h</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.dataButton}>
                   <Image
-                    source={require("./../../assets/images/fire-icon.png")}
-                    style={styles.fireIcon}
+                      source={require("../../assets/images/fire-icon.png")}
+                      style={styles.fireIcon}
                   />
                   <Text style={styles.dataText}>{caloriesBurnt} cal</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/*second*/}
             <View style={styles.second}>
               <View style={styles.secondTitle}>
                 <Text style={styles.text}>Set up your Goal</Text>
@@ -174,15 +150,14 @@ export default function HomePage() {
                 </View>
                 <View style={styles.infoRow}>
                   <Image
-                    source={require("./../../assets/images/fire-icon.png")}
-                    style={styles.fireIcon}
+                      source={require("../../assets/images/fire-icon.png")}
+                      style={styles.fireIcon}
                   />
                   <Text style={styles.infoText}>N/A</Text>
                 </View>
               </View>
             </View>
 
-            {/*third*/}
             <View style={styles.third}>
               <View style={styles.thirdTitle}>
                 <Text style={styles.text}>Discover Montreal,</Text>
@@ -195,7 +170,6 @@ export default function HomePage() {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </SafeAreaProvider>
   );
 }
 
@@ -206,6 +180,7 @@ const Colors = {
   textPrimary: "#000",
   textSecondary: "#fff",
 };
+
 const ButtonBase = {
   borderRadius: 10,
   paddingVertical: 20,
@@ -215,6 +190,7 @@ const ButtonBase = {
   marginVertical: 10,
   backgroundColor: Colors.primary,
 };
+
 const commonCardStyle = {
   borderRadius: 20,
   paddingHorizontal: 20,
@@ -231,9 +207,7 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     fontWeight: "bold",
   },
-
   header: {
-    // welcome back ...,
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -258,15 +232,11 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     fontWeight: "bold",
   },
-
-  // part which depends on the day on calendar
   placeholder: {
     alignItems: "center",
     paddingHorizontal: 20,
     flex: 1,
   },
-
-  // first quartet , circular progress + stats
   first: {
     ...commonCardStyle,
     backgroundColor: Colors.background,
@@ -277,11 +247,6 @@ const styles = StyleSheet.create({
   innerCircle: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  image: {
-    width: 60,
-    height: 50,
-    marginBottom: 20,
   },
   fireIcon: {
     width: 40,
@@ -303,8 +268,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-
-  // third quartet , discover your city
   second: {
     ...commonCardStyle,
     backgroundColor: "#fff",
@@ -329,8 +292,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 16,
   },
-
-  // third quartet , discover your city
   third: {
     width: "100%",
     marginTop: 20,
@@ -341,3 +302,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
+
