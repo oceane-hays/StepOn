@@ -15,6 +15,8 @@ export default function ChooseRoute() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
+
+
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.button}>
                         <ArrowLeft size={30} color={Colors.orange_fonce} />
