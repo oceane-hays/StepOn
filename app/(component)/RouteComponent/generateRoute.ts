@@ -1,15 +1,18 @@
-import { calculateDistance } from "@/app/(component)/RouteComponent/calculateDistance";
-import { Region } from "react-native-maps";
-import { TransformedParcData, Park } from "@/app/(component)/RouteComponent/transformedParcData";
+import {calculateDistance} from "@/app/(component)/RouteComponent/calculateDistance";
+import {Region} from "react-native-maps";
+import {Park, TransformedParcData} from "@/app/(component)/RouteComponent/transformedParcData";
 
 interface RoutePoint extends Region {
     name?: string;
     distance?: number;
 }
 
-export const GenerateRoundTrip = (startLocation: Region, targetDistance: number): RoutePoint[] => {
-    let remainingDistance = targetDistance;
+export const GenerateRoundTrip = (startLocation: Region, targetSteps: number, height : number): RoutePoint[] => {
+    const strideLength = height * 0.414;
+    let remainingDistance = (targetSteps * strideLength) / 1000;
+
     const route: RoutePoint[] = [startLocation];
+
     const visitedParks: Set<string> = new Set();
 
     while (remainingDistance > 0) {
@@ -79,7 +82,9 @@ export const GenerateRoundTrip = (startLocation: Region, targetDistance: number)
             startLocation.longitude
         )});
 
+
     console.log(route);
+    console.log(remainingDistance)
     return route;
 };
 

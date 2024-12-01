@@ -52,7 +52,7 @@ export default function SetUpYourGoal() {
                 <TouchableOpacity
                     style={styles.submitButton}
                     onPress={() => router.push({
-                        pathname: '/plan-route',
+                        pathname: '/home',
                         params: { goal }
                     })}
                 >

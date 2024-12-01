@@ -21,16 +21,18 @@ import { differenceInSeconds } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DEFAULT_LOCATION: Region = {
-  latitude: 45.48833488659076,
-  longitude: -73.63675359307672,
+  latitude: 45.5010498,
+  longitude: -73.6156192,
   latitudeDelta: LATITUDE_DELTA,
   longitudeDelta: LONGITUDE_DELTA,
 };
 
-const route = GenerateRoundTrip(DEFAULT_LOCATION, 3.5);
+const height = 1.7; // in meters
+const route = GenerateRoundTrip(DEFAULT_LOCATION, 4000, height);
 
 export default function MapRoute() {
   const mapRef = useRef<MapView>(null);
+  const [distance, setDistance] = useState(0);
   const [destinations, setDestinations] = useState<Destination[]>([]);
 
   const appState = useRef(AppState.currentState);
@@ -133,6 +135,7 @@ export default function MapRoute() {
           ))}
           {destinations.map((destination, index) => {
             if (index === 0) return null;
+            console.log(distance)
             return (
               <MapViewDirections
                 key={index}
@@ -142,6 +145,9 @@ export default function MapRoute() {
                 strokeColor="orange"
                 strokeWidth={4}
                 onError={(error) => console.log("Directions error:", error)}
+                onReady={(result) => {
+                  setDistance(result.distance); // Distance in kilometers
+                }}
               />
             );
           })}
