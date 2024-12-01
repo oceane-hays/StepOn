@@ -4,9 +4,13 @@ import PathCard from "@/app/(component)/pathCard";
 import Swiper from "react-native-swiper";
 import { ArrowLeft, ArrowRight } from "lucide-react-native";
 import { Colors } from "@/services/COLORS";
+import {useRouter} from "expo-router";
+
 
 export default function ChooseRoute() {
     const swiperRef = useRef<Swiper>(null);
+
+    const route = useRouter();
 
     return (
         <SafeAreaView style={styles.container}>

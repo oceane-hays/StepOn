@@ -50,6 +50,7 @@ export default function RootLayout() {
         <Stack initialRouteName={isConnected ? '(tabs)' : '(auth)'}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(findway)" options={{ headerShown: false }} />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

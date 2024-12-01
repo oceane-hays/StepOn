@@ -1,27 +1,30 @@
-// import * as React from 'react';
-// import { View, useWindowDimensions } from 'react-native';
-// import { TabView, SceneMap } from 'react-native-tab-view';
-//
-// const renderScene = SceneMap({
-//     first: FirstRoute,
-//     second: SecondRoute,
-// });
-//
-// const routes = [
-//     { key: 'first', title: 'First' },
-//     { key: 'second', title: 'Second' },
-// ];
-//
-// export default function TabViewExample() {
-//     const layout = useWindowDimensions();
-//     const [index, setIndex] = React.useState(0);
-//
-//     return (
-//         <TabView
-//             navigationState={{ index, routes }}
-//             renderScene={renderScene}
-//             onIndexChange={setIndex}
-//             initialLayout={{ width: layout.width }}
-//         />
-//     );
-// }
+import { Tabs } from 'expo-router';
+
+export default function RouteLayout() {
+    return (
+        <Tabs
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Tabs.Screen
+                name="map-route"
+                options={{
+                    href: '/map-route',
+                }}
+            />
+            <Tabs.Screen
+                name="choose-route"
+                options={{
+                    href: '/choose-route',
+                }}
+            />
+            <Tabs.Screen
+                name="plan-route"
+                options={{
+                    href: '/plan-route',
+                }}
+            />
+        </Tabs>
+    );
+}
