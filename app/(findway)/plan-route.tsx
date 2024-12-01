@@ -3,12 +3,19 @@ import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView} from 'react-nati
 import Logo from "@/app/(component)/logo";
 import Filter from "@/app/(component)/filter";
 import {Colors} from "@/services/COLORS";
+import {useNavigation} from "expo-router";
+import {NavigationProp} from "@react-navigation/core";
+
+function SubmitRoute(navigation : NavigationProp<any> , steps : number, scenery: string | null, routeType: string | null, destination: string | null) {
+    navigation.navigate('home')
+}
 
 export default function PlanRoute() {
   const [steps, setSteps] = useState(1000);
   const [scenery, setScenery] = useState<string | null>(null);
   const [routeType, setRouteType] = useState<string | null>(null);
 
+  const navigation = useNavigation();
   const incrementSteps = () => setSteps((prev) => Math.min(prev + 1000, 10000));
   const decrementSteps = () => setSteps((prev) => Math.max(prev - 1000, 1000));
 
@@ -50,7 +57,7 @@ export default function PlanRoute() {
                     <TouchableOpacity style={[styles.actionButton, styles.outlineButton]}>
                         <Text style={styles.outlineButtonText}>Skip</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.actionButton}>
+                    <TouchableOpacity style={styles.actionButton} onPress={()=>{SubmitRoute(navigation, steps, scenery, routeType, null)}}>
                         <Text style={styles.actionButtonText}>Submit</Text>
                     </TouchableOpacity>
                 </View>

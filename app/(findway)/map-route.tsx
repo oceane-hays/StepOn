@@ -9,6 +9,7 @@ import { Footprints, MapPin, Timer } from "lucide-react-native";
 import { GenerateRoundTrip } from "@/app/(component)/RouteComponent/generateRoute";
 import MapViewDirections from "react-native-maps-directions";
 import {GOOGLE_MAPS_API_KEY} from "@/services/GOOGLE_MAPS_API_KEY";
+import {Destination} from "@/app/(component)/RouteComponent/types";
 
 
 const DEFAULT_LOCATION : Region = {
@@ -22,22 +23,18 @@ const route = GenerateRoundTrip(DEFAULT_LOCATION, 1.5);
 
 export default function MapRoute() {
     const mapRef = useRef<MapView>(null);
-    const [destinations, setDestinations] = useState<Array<{latitude: number, longitude: number}>>([]);
+    const [destinations, setDestinations] = useState<Destination[]>([]);
+
 
     useEffect(() => {
-        if (route.length > 1) {
-            const newDestinations = [];
-            for (let i = 1; i < route.length; i++) {
-                if ('center' in route[i]) {
-                    console.log(route[i].longitude);
-                    newDestinations.push({
-                        latitude: route[i].center,
-                        longitude: route[i].longitude
-                    });
-                }
+        const newDestinations: Destination[] = route.map(point => {
+            if ('center' in point && point.center) {
+                return point.center;
+            } else {
+                return { latitude: point.latitude, longitude: point.longitude };
             }
-            setDestinations(newDestinations);
-        }
+        });
+        setDestinations(newDestinations);
     }, []);
 
     const handleTakeABreak = () => {
