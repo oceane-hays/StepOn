@@ -19,6 +19,7 @@ import { Destination } from "@/app/(component)/RouteComponent/types";
 import { AppState } from "react-native";
 import { differenceInSeconds } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 const DEFAULT_LOCATION: Region = {
   latitude: 45.48833488659076,
@@ -32,13 +33,17 @@ const route = GenerateRoundTrip(DEFAULT_LOCATION, 3.5);
 export default function MapRoute() {
   const mapRef = useRef<MapView>(null);
   const [destinations, setDestinations] = useState<Destination[]>([]);
-
   const appState = useRef(AppState.currentState);
   const [elapsed, setElapsed] = useState<number | undefined>(0);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const router = useRouter();
 
   const recordStartTime = async () => {
     try {
       const now = new Date();
+      if (elapsed) {
+        await AsyncStorage.setItem("@last_time", elapsed.toString());
+      }
       await AsyncStorage.setItem("@start_time", now.toISOString());
     } catch (err) {
       // TODO: handle errors from setItem properly
@@ -47,18 +52,21 @@ export default function MapRoute() {
   };
 
   useEffect(() => {
+    recordStartTime();
+
     const interval = setInterval(async () => {
-      const elapsedTime = await getElapsedTime();
-      setElapsed(elapsedTime ?? 0);
+      if (!isPaused) {
+        const elapsedTime = await getElapsedTime();
+        setElapsed(elapsedTime ?? 0);
+      }
     }, 1000);
 
-    // Clear the interval when the component unmounts
     return () => clearInterval(interval);
-  }, []);
+  }, [isPaused]);
 
   useEffect(() => {
-    AppState.addEventListener("change", handleAppStateChange);
     recordStartTime();
+    AppState.addEventListener("change", handleAppStateChange);
     return;
   }, []);
 
@@ -67,20 +75,33 @@ export default function MapRoute() {
       appState.current.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      // We just became active again: recalculate elapsed time based
-      // on what we stored in AsyncStorage when we started.
-      const elapsed = await getElapsedTime();
-      // Update the elapsed seconds state
-      console.log(elapsed);
-      setElapsed(elapsed);
+      if (!isPaused) {
+        const elapsed = await getElapsedTime();
+        setElapsed(elapsed ?? 0);
+      }
     }
     appState.current = nextAppState;
   };
   const getElapsedTime = async () => {
     try {
       const startTime = await AsyncStorage.getItem("@start_time");
+      var lastTime: string | null = "0";
+      if (elapsed) {
+        lastTime = await AsyncStorage.getItem("@last_time");
+      }
+      console.log("START " + lastTime);
+
       const now = new Date();
-      if (startTime) return differenceInSeconds(now, Date.parse(startTime));
+
+      if (startTime) {
+        console.log("DIFF " + differenceInSeconds(now, Date.parse(startTime)));
+      }
+
+      if (startTime)
+        return (
+          differenceInSeconds(now, Date.parse(startTime)) +
+          Number.parseFloat(lastTime ?? "0")
+        );
     } catch (err) {
       // TODO: handle errors from setItem properly
       console.warn(err);
@@ -99,12 +120,11 @@ export default function MapRoute() {
   }, []);
 
   const handleTakeABreak = () => {
-    console.log("Take a Break pressed");
-    // Add your logic for taking a break
+    setIsPaused((prevState) => !prevState);
   };
 
   const handleFinish = () => {
-    console.log("Finish pressed");
+    router.push("home");
   };
 
   return (
@@ -190,7 +210,9 @@ export default function MapRoute() {
               style={[styles.button, { backgroundColor: Colors.bleu_clair }]}
               onPress={handleTakeABreak}
             >
-              <Text style={styles.buttonText}>Take a Break</Text>
+              <Text style={styles.buttonText}>
+                {isPaused ? "Resume" : "Take a Break"}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: Colors.orange_fonce }]}
