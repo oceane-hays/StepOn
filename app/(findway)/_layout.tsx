@@ -10,19 +10,19 @@ export default function RouteLayout() {
             <Tabs.Screen
                 name="map-route"
                 options={{
-                    href: '/map-route',
+                    href: null,
                 }}
             />
             <Tabs.Screen
                 name="choose-route"
                 options={{
-                    href: '/choose-route',
+                    href: null,
                 }}
             />
             <Tabs.Screen
                 name="plan-route"
                 options={{
-                    href: '/plan-route',
+                    href: null,
                 }}
             />
         </Tabs>

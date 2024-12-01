@@ -19,7 +19,7 @@ const DEFAULT_LOCATION : Region = {
     longitudeDelta: LONGITUDE_DELTA,
 };
 
-const route = GenerateRoundTrip(DEFAULT_LOCATION, 1.5);
+const route = GenerateRoundTrip(DEFAULT_LOCATION, 3.5);
 
 export default function MapRoute() {
     const mapRef = useRef<MapView>(null);
@@ -87,7 +87,12 @@ export default function MapRoute() {
                 <View style={styles.cardContainer}>
                     <View style={{...styles.card, padding: 20, width: '85%', alignSelf:'center'}}>
                         <CircularItems icon={<Footprints color={Colors.orange_fonce} />} numb={0} pourcent={10} />
-                        <CircularItems icon={<Timer color={Colors.orange_fonce} />} numb={0} pourcent={30} />
+
+                        <View style={{alignItems:'center'}}>
+                            <Text style={{color: Colors.orange_fonce, fontSize: 30, marginBottom: 10, fontWeight: '300'}}>00 : 00</Text>
+                            <Timer color={Colors.orange_fonce} />
+                        </View>
+
                         <CircularItems icon={<MapPin color={Colors.orange_fonce} />} numb={0} pourcent={60} />
                     </View>
 
