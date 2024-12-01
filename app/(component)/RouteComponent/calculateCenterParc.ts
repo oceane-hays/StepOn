@@ -1,3 +1,6 @@
+
+// formula taken from the internet
+
 export const CalculateCenterParc = (coordinates : number[][]) => {
     let x = 0, y = 0, area = 0;
 

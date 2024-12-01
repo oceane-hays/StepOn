@@ -4,6 +4,6 @@ import MapRoute from "@/app/(findway)/map-route";
 
 export default function Route() {
     return (
-        <PlanRoute/>
+        <MapRoute/>
     );
 }
