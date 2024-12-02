@@ -190,8 +190,8 @@ export default function MapRoute() {
                   fontWeight: "300",
                 }}
               >
-                {elapsed ? Math.floor(elapsed / 3600) : 0} :{" "}
-                {elapsed ? Math.floor(elapsed / 60) : 0} :{" "}
+                {elapsed ? Math.floor(elapsed / 3600) : 0} H:{" "}
+                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}min :{" "}
                 {elapsed ? elapsed % 60 : 0}
               </Text>
               <Timer color={Colors.orange_fonce} />
