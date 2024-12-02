@@ -91,13 +91,7 @@ export default function MapRoute() {
       if (elapsed) {
         lastTime = await AsyncStorage.getItem("@last_time");
       }
-      console.log("START " + lastTime);
-
       const now = new Date();
-
-      if (startTime) {
-        console.log("DIFF " + differenceInSeconds(now, Date.parse(startTime)));
-      }
 
       if (startTime)
         return (
@@ -155,7 +149,7 @@ export default function MapRoute() {
           ))}
           {destinations.map((destination, index) => {
             if (index === 0) return null;
-            console.log(distance)
+            console.log(distance);
             return (
               <MapViewDirections
                 key={index}
@@ -196,8 +190,8 @@ export default function MapRoute() {
                   fontWeight: "300",
                 }}
               >
-                {elapsed ? Math.floor(elapsed / 3600) : 0} H:{" "}
-                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}min :{" "}
+                {elapsed ? Math.floor(elapsed / 3600) : 0}h:{" "}
+                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}min :
                 {elapsed ? elapsed % 60 : 0}
               </Text>
               <Timer color={Colors.orange_fonce} />

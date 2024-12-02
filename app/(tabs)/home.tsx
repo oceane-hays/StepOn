@@ -10,14 +10,18 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import {ArrowRight, Footprints, LocateIcon, TimerIcon} from "lucide-react-native";
+import {
+  ArrowRight,
+  Footprints,
+  LocateIcon,
+  TimerIcon,
+} from "lucide-react-native";
 import { Pedometer } from "expo-sensors";
-import LottieView from 'lottie-react-native';
+import LottieView from "lottie-react-native";
 import Logo from "@/app/(component)/logo";
 import Discover from "@/app/(component)/discover";
 import Calendar from "@/app/(component)/calendar";
-
-
+import { router } from "expo-router";
 
 export default function HomePage() {
   const [percentage, setPercentage] = useState(0);
@@ -35,8 +39,12 @@ export default function HomePage() {
   const averageSpeed = 1.34; // m/s
   const MET = 3.5;
   const weight = 70; // kg
-  const timeHours = Number((distanceKm * 1000 / averageSpeed / 3600).toFixed(2));
-  const caloriesBurnt = Number((timeHours * MET * weight * 3.5 / 200 * 60).toFixed(0));
+  const timeHours = Number(
+    ((distanceKm * 1000) / averageSpeed / 3600).toFixed(2)
+  );
+  const caloriesBurnt = Number(
+    (((timeHours * MET * weight * 3.5) / 200) * 60).toFixed(0)
+  );
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -66,110 +74,119 @@ export default function HomePage() {
   };
 
   return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <Logo />
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Logo />
 
-          <View style={styles.header}>
-            <Text style={styles.text}>Welcome back {userName},</Text>
-            <TouchableWithoutFeedback>
-              <View style={styles.headerButton}>
+        <View style={styles.header}>
+          <Text style={styles.text}>Welcome back {userName},</Text>
+          <TouchableWithoutFeedback>
+            <View style={styles.headerButton}>
+              <Image
+                source={require("../../assets/images/step.png")}
+                style={styles.headerButtonImage}
+              />
+              <Text style={styles.headerButtonText}>{totalSteps}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <Calendar />
+
+        <View style={styles.placeholder}>
+          <View style={styles.first}>
+            <AnimatedCircularProgress
+              size={210}
+              width={15}
+              fill={percentage}
+              rotation={0}
+              tintColor="#ECA15A"
+              backgroundColor="#f9dfb9"
+              lineCap="round"
+            >
+              {() => (
+                <View style={styles.innerCircle}>
+                  {isCounting ? (
+                    <LottieView
+                      autoPlay
+                      style={{ height: 110, width: 110 }}
+                      source={require("../../assets/images/walking.json")}
+                    />
+                  ) : (
+                    <Image
+                      source={require("../../assets/images/stop.png")}
+                      style={{ height: 90, width: 90 }}
+                    />
+                  )}
+                  <Text style={styles.text}>{totalSteps}</Text>
+                </View>
+              )}
+            </AnimatedCircularProgress>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.dataButton}>
+                <LocateIcon />
+                <Text style={styles.dataText}>{distanceCovered} km</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.dataButton}>
+                <TimerIcon />
+                <Text style={styles.dataText}>{timeHours} h</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.dataButton}>
                 <Image
-                    source={require("../../assets/images/step.png")}
-                    style={styles.headerButtonImage}
+                  source={require("../../assets/images/fire-icon.png")}
+                  style={styles.fireIcon}
                 />
-                <Text style={styles.headerButtonText}>{totalSteps}</Text>
-              </View>
-            </TouchableWithoutFeedback>
+                <Text style={styles.dataText}>{caloriesBurnt} cal</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <Calendar />
-
-          <View style={styles.placeholder}>
-            <View style={styles.first}>
-              <AnimatedCircularProgress
-                  size={210}
-                  width={15}
-                  fill={percentage}
-                  rotation={0}
-                  tintColor="#ECA15A"
-                  backgroundColor="#f9dfb9"
-                  lineCap="round"
+          <View style={styles.second}>
+            <View style={styles.secondTitle}>
+              <Text style={styles.text}>Set up your Goal</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  router.push({
+                    pathname: "set-up-your-goal",
+                    params: {
+                      goal: goal,
+                    },
+                  });
+                }}
               >
-                {() => (
-                    <View style={styles.innerCircle}>
-                      {isCounting ? (
-                          <LottieView
-                              autoPlay
-                              style={{height: 110, width: 110}}
-                              source={require("../../assets/images/walking.json")}
-                          />
-                      ) : (
-                          <Image
-                              source={require('../../assets/images/stop.png')}
-                              style={{height: 90, width: 90}}
-                          />
-                      )}
-                      <Text style={styles.text}>{totalSteps}</Text>
-                    </View>
-                )}
-              </AnimatedCircularProgress>
-
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.dataButton}>
-                  <LocateIcon />
-                  <Text style={styles.dataText}>{distanceCovered} km</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.dataButton}>
-                  <TimerIcon />
-                  <Text style={styles.dataText}>{timeHours} h</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.dataButton}>
-                  <Image
-                      source={require("../../assets/images/fire-icon.png")}
-                      style={styles.fireIcon}
-                  />
-                  <Text style={styles.dataText}>{caloriesBurnt} cal</Text>
-                </TouchableOpacity>
-              </View>
+                <ArrowRight color="#5E83C0" size={30} />
+              </TouchableOpacity>
             </View>
-
-            <View style={styles.second}>
-              <View style={styles.secondTitle}>
-                <Text style={styles.text}>Set up your Goal</Text>
-                <TouchableOpacity>
-                  <ArrowRight color="#5E83C0" size={30} />
-                </TouchableOpacity>
+            <View style={styles.secondTitle}>
+              <View style={styles.infoRow}>
+                <Footprints />
+                <Text style={styles.infoText}>{goal}</Text>
               </View>
-              <View style={styles.secondTitle}>
-                <View style={styles.infoRow}>
-                  <Footprints />
-                  <Text style={styles.infoText}>{goal}</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <Image
-                      source={require("../../assets/images/fire-icon.png")}
-                      style={styles.fireIcon}
-                  />
-                  <Text style={styles.infoText}>N/A</Text>
-                </View>
+              <View style={styles.infoRow}>
+                <Image
+                  source={require("../../assets/images/fire-icon.png")}
+                  style={styles.fireIcon}
+                />
+                <Text style={styles.infoText}>N/A</Text>
               </View>
-            </View>
-
-            <View style={styles.third}>
-              <View style={styles.thirdTitle}>
-                <Text style={styles.text}>Discover Montreal,</Text>
-                <TouchableOpacity>
-                  <ArrowRight color="#5E83C0" size={30} />
-                </TouchableOpacity>
-              </View>
-              <Discover />
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+
+          <View style={styles.third}>
+            <View style={styles.thirdTitle}>
+              <Text style={styles.text}>Discover Montreal,</Text>
+              <TouchableOpacity>
+                <ArrowRight color="#5E83C0" size={30} />
+              </TouchableOpacity>
+            </View>
+            <Discover />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -302,4 +319,3 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 });
-
