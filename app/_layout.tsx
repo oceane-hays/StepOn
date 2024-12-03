@@ -18,6 +18,7 @@ import TabLayout from "@/app/(tabs)/_layout";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
   const [isConnected, setIsConnected] = useState<boolean>(true);
   const colorScheme = useColorScheme();
   const router = useRouter();
@@ -31,13 +32,13 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  useEffect(() => {
-    if (!isConnected) {
-      router.navigate("/(auth)/login");
-    } else {
-      router.navigate("/(tabs)/home");
-    }
-  }, [isConnected]);
+  // useEffect(() => {
+  //   if (!isConnected) {
+  //     router.push("./(auth)/login");
+  //   } else {
+  //     router.push("./(tabs)/home");
+  //   }
+  // }, [isConnected]);
 
   if (!loaded) {
     return null;

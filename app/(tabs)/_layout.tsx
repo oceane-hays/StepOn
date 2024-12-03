@@ -99,29 +99,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* Invisible tabs with proper layout adjustment */}
-      <Tabs.Screen
-        name="map"
-        options={{
-          tabBarButton: () => null,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-          tabBarButton: () => null,
-          headerShown: false,
-        }}
-      />
-      <Tabs.Screen
-        name="set-up-your-goal"
-        options={{
-          tabBarButton: () => null,
-          headerShown: false,
-        }}
-      />
+
     </Tabs>
   );
 }

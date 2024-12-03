@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {Colors} from "@/services/COLORS";
-import SearchBar from "@/app/(component)/search";
 
 const images = {
     Nature: require("./../../assets/images/filterIcon/landscape.png"),

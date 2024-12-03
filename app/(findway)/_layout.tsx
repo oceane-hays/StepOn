@@ -8,7 +8,7 @@ export default function RouteLayout() {
             }}
         >
             <Tabs.Screen
-                name="map-route"
+                name="plan-route"
                 options={{
                     href: null,
                 }}
@@ -20,11 +20,12 @@ export default function RouteLayout() {
                 }}
             />
             <Tabs.Screen
-                name="plan-route"
+                name="map-route"
                 options={{
                     href: null,
                 }}
             />
+
         </Tabs>
     );
 }

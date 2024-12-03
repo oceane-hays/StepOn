@@ -35,6 +35,7 @@ export default function MapRoute() {
   const mapRef = useRef<MapView>(null);
   const [distance, setDistance] = useState(0);
   const [destinations, setDestinations] = useState<Destination[]>([]);
+
   const appState = useRef(AppState.currentState);
   const [elapsed, setElapsed] = useState<number | undefined>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -119,8 +120,8 @@ export default function MapRoute() {
     setIsPaused((prevState) => !prevState);
   };
 
-  const handleFinish = () => {
-    router.push("home");
+  function handleFinish() {
+    router.replace('/(tabs)');
   };
 
   return (
@@ -190,8 +191,8 @@ export default function MapRoute() {
                   fontWeight: "300",
                 }}
               >
-                {elapsed ? Math.floor(elapsed / 3600) : 0}h:{" "}
-                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}min :
+                {elapsed ? Math.floor(elapsed / 3600) : 0}h{" "}
+                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}min
                 {elapsed ? elapsed % 60 : 0}
               </Text>
               <Timer color={Colors.orange_fonce} />

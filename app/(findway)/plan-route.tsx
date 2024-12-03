@@ -5,101 +5,97 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
 } from "react-native";
+import { useRouter } from "expo-router";
 import Logo from "@/app/(component)/logo";
 import Filter from "@/app/(component)/filter";
-import { Colors } from "@/services/COLORS";
-import { useNavigation, useRouter } from "expo-router";
-import { NavigationProp } from "@react-navigation/core";
 import SearchBar from "@/app/(component)/search";
+import { Colors } from "@/services/COLORS";
 
-export default function PlanRoute(setDestination : any) {
-  const [steps, setSteps] = useState(1000);
+interface PlanRouteProps {
+  setDestination: (destination: string) => void;
+}
+
+export default function PlanRoute({ setDestination }: PlanRouteProps) {
+  const [steps, setSteps] = useState(5000);
   const [scenery, setScenery] = useState<string | null>(null);
   const [routeType, setRouteType] = useState<string | null>(null);
+  const [destination, setLocalDestination] = useState<string | null>(null);
 
   const router = useRouter();
 
-  function SubmitRoute(
-    steps: number,
-    scenery: string | null,
-    routeType: string | null,
-    destination: string | null
-  ) {
-    // You can pass parameters to the route if needed
+  function submitRoute() {
+    if (scenery === null && routeType === null) {
+      Alert.alert('Please enter filter');
+    } else {
+      router.push({
+        pathname: "/choose-route",
+        params: { steps, scenery, routeType, destination },
+      });
+    }
+  }
+
+  function submitRouteSkip() {
     router.push({
       pathname: "/choose-route",
-      params: { steps, scenery, routeType, destination },
+      params: { steps, scenery, routeType, destination: null },
     });
   }
 
   const incrementSteps = () => setSteps((prev) => Math.min(prev + 1000, 10000));
   const decrementSteps = () => setSteps((prev) => Math.max(prev - 1000, 1000));
 
+  const handleDestinationChange = (newDestination: string) => {
+    setLocalDestination(newDestination);
+    setDestination(newDestination);
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <View style={{ marginBottom: 90 }}>
-          <Logo />
+      <SafeAreaView style={styles.container}>
+        <View>
+          <View style={{ marginBottom: 90 }}>
+            <Logo />
+          </View>
+
+          <View style={styles.header}>
+            <Text style={styles.title}>Plan Your Route</Text>
+            <View style={styles.placeholder} />
+          </View>
         </View>
 
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>Plan Your Route</Text>
-          <View style={styles.placeholder} />
+        <View style={styles.card}>
+          <Filter
+              incrementSteps={incrementSteps}
+              decrementSteps={decrementSteps}
+              steps={steps}
+              scenery={scenery}
+              setScenery={setScenery}
+              routeType={routeType}
+              setRouteType={setRouteType}
+          />
+
+          <SearchBar setDestination={handleDestinationChange} />
+
+          <View style={styles.row}>
+            <TouchableOpacity
+                style={[styles.actionButton, styles.outlineButton]}
+                onPress={submitRouteSkip}
+            >
+              <Text style={styles.outlineButtonText}>Skip</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.actionButton}
+                onPress={submitRoute}
+            >
+              <Text style={styles.actionButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-
-      <View
-        style={{
-          ...card,
-          flex: 1,
-          justifyContent: "space-around",
-          backgroundColor: Colors.gris,
-          paddingVertical: 10,
-          paddingHorizontal: 10,
-          borderRadius: 20,
-        }}
-      >
-        <Filter
-          incrementSteps={incrementSteps}
-          decrementSteps={decrementSteps}
-          steps={steps}
-          scenery={scenery}
-          setScenery={setScenery}
-          routeType={routeType}
-          setRouteType={setRouteType}
-
-        />
-
-        <SearchBar setDestination={setDestination} />
-
-        {/* Action Buttons */}
-        <View style={styles.row}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.outlineButton]}
-            onPress={() => SubmitRoute(0, null, null, null)}
-          >
-            <Text style={styles.outlineButtonText}>Skip</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => SubmitRoute(steps, scenery, routeType, null)}
-          >
-            <Text style={styles.actionButtonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
   );
 }
-
-const card = {
-  marginHorizontal: 20,
-  marginBottom: 30,
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    ...card,
+    marginHorizontal: 20,
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
@@ -117,11 +113,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.orange_fonce,
   },
-  iconButton: {
-    padding: 8,
-    borderRadius: 4,
-    backgroundColor: "#f0f0f0",
-    marginRight: 12,
+  card: {
+    flex: 1,
+    justifyContent: "space-around",
+    backgroundColor: Colors.gris,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginBottom: 30,
   },
   row: {
     flexDirection: "row",
@@ -147,16 +147,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.orange_fonce,
   },
-  button: {
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    padding: 10,
-    shadowColor: Colors.gris_fonce,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-  },
   placeholder: {
-    width: 50, // Match the width of the button
+    width: 50,
   },
 });
+

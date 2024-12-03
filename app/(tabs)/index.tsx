@@ -1,4 +1,4 @@
-import HomePage from "@/app/(tabs)/home";
+import HomePage from "@/app/(component)/home";
 
 export default function HomeScreen() {
   return (
