@@ -11,8 +11,9 @@ import Filter from "@/app/(component)/filter";
 import { Colors } from "@/services/COLORS";
 import { useNavigation, useRouter } from "expo-router";
 import { NavigationProp } from "@react-navigation/core";
+import SearchBar from "@/app/(component)/search";
 
-export default function PlanRoute() {
+export default function PlanRoute(setDestination : any) {
   const [steps, setSteps] = useState(1000);
   const [scenery, setScenery] = useState<string | null>(null);
   const [routeType, setRouteType] = useState<string | null>(null);
@@ -68,7 +69,10 @@ export default function PlanRoute() {
           setScenery={setScenery}
           routeType={routeType}
           setRouteType={setRouteType}
+
         />
+
+        <SearchBar setDestination={setDestination} />
 
         {/* Action Buttons */}
         <View style={styles.row}>
@@ -86,6 +90,7 @@ export default function PlanRoute() {
             <Text style={styles.actionButtonText}>Submit</Text>
           </TouchableOpacity>
         </View>
+
       </View>
     </SafeAreaView>
   );

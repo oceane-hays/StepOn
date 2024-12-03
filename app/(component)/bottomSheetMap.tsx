@@ -55,7 +55,7 @@ export default function BottomSheetMap({
         onChange={handleSheetChanges}
       >
         <BottomSheetView style={styles.contentContainer}>
-          <SearchBar mapRef={mapRef} setDestination={setDestination} />
+
 
           {showInfo && (
             <>

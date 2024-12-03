@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {Colors} from "@/services/COLORS";
+import SearchBar from "@/app/(component)/search";
 
 const images = {
     Nature: require("./../../assets/images/filterIcon/landscape.png"),
@@ -23,6 +24,7 @@ interface FilterProps {
     setScenery: (value: string | null) => void;
     routeType: string | null;
     setRouteType: (value: string | null) => void;
+
 }
 
 const Filter: React.FC<FilterProps> = ({
@@ -33,6 +35,7 @@ const Filter: React.FC<FilterProps> = ({
                                            setScenery,
                                            routeType,
                                            setRouteType,
+
                                        }) => {
     return (
         <View>
@@ -79,6 +82,8 @@ const Filter: React.FC<FilterProps> = ({
                             </Text>
                         </TouchableOpacity>
                     ))}
+
+
                 </View>
             </View>
 

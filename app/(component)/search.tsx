@@ -7,7 +7,7 @@ import {LATITUDE_DELTA} from "@/services/LATITUDE_DELTA";
 import {LONGITUDE_DELTA} from "@/services/LONGITUDE_DELTA";
 
 
-export default function SearchBar({ mapRef, setDestination } : any) {
+export default function SearchBar({ setDestination } : any) {
     const [isFocused, setIsFocused] = useState(false);
 
 
@@ -27,23 +27,8 @@ export default function SearchBar({ mapRef, setDestination } : any) {
             latitude: details?.geometry?.location.lat,
             longitude: details?.geometry?.location.lng,
         });
-        moveToLocation(
-            details?.geometry?.location.lat,
-            details?.geometry?.location.lng,
-        );
     };
 
-    const moveToLocation = async (latitude : any, longitude : any)  => {
-        mapRef.current.animateToRegion(
-            {
-                latitude,
-                longitude,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-            },
-            2000,
-        );
-    };
 
     return (
         <View style={styles.container}>
@@ -70,11 +55,7 @@ export default function SearchBar({ mapRef, setDestination } : any) {
 
 const styles = StyleSheet.create({
     container: {
-        position: "absolute", // Rend la barre flottante
-        top: 10, // Ajuste la position verticale
-        left: 10, // Ajuste la position horizontale
-        right: 10, // Assure un alignement centré en fonction de l'écran
-        zIndex: 1, // Place la barre devant les autres éléments
+        flex: 1,
     },
     textInput: {
         borderWidth: 1,
