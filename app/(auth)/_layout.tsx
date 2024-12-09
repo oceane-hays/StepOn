@@ -1,11 +1,30 @@
-import React from 'react';
-import '@expo/vector-icons';
-import Login from "@/app/(auth)/login";
+import { Tabs } from "expo-router";
 
 export default function AuthLayout() {
-
-  console.log('dingdong')
   return (
-      <Login/>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name="login"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="signin"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="smsVerification"
+        options={{
+          href: null,
+        }}
+      />
+    </Tabs>
   );
 }

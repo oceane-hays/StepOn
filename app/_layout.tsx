@@ -18,8 +18,7 @@ import TabLayout from "@/app/(tabs)/_layout";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-  const [isConnected, setIsConnected] = useState<boolean>(true);
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
   const colorScheme = useColorScheme();
   const router = useRouter();
   const [loaded] = useFonts({
@@ -32,17 +31,24 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  // useEffect(() => {
-  //   if (!isConnected) {
-  //     router.push("./(auth)/login");
-  //   } else {
-  //     router.push("./(tabs)/home");
-  //   }
-  // }, [isConnected]);
+  useEffect(() => {
+    const checkConnection = async () => {
+      setTimeout(() => {
+        setIsConnected(false);
+      }, 1000);
+    };
+    checkConnection();
+  }, []);
 
-  if (!loaded) {
-    return null;
-  }
+  useEffect(() => {
+    if (isConnected !== null) {
+      if (isConnected) {
+        router.push("(tabs)");
+      } else {
+        router.push("/(auth)/login");
+      }
+    }
+  }, [isConnected]);
 
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
