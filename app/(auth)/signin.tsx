@@ -2,6 +2,7 @@ import { ThemedText } from '@/components/ThemedText';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {router} from "expo-router";
 
 
 
@@ -47,7 +48,7 @@ export default function SignInPage() {
             alert('Veuillez accepter les conditions d\'utilisation.');
             return;
         }
-        // Proceed with sign up logic
+        router.push('/(auth)/smsVerification');
         console.log('Sign up successful');
     };
 
@@ -64,26 +65,26 @@ export default function SignInPage() {
 
                 <ThemedText style={styles.title}>Créer un compte </ThemedText>
 
-                <CustomTextInput placeholder="Nom Prénom *" value={name} onChangeText={setName} />
-                <CustomTextInput placeholder="Adresse Postale *" value={address} onChangeText={setAddress} />
-                <CustomTextInput placeholder="Numéro de Téléphone *" value={phone} onChangeText={setPhone} />
-                <CustomTextInput placeholder="Adresse Email" value={email} onChangeText={setEmail} />
-                <CustomTextInput placeholder="Mot de passe *" value={password} onChangeText={setPassword} secureTextEntry />
-                <CustomTextInput placeholder="Confirmer mot de passe *" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry />
+                <CustomTextInput placeholder="Name *" value={name} onChangeText={setName} />
+                <CustomTextInput placeholder="Adress *" value={address} onChangeText={setAddress} />
+                <CustomTextInput placeholder="Phone Number *" value={phone} onChangeText={setPhone} />
+                <CustomTextInput placeholder="Email Adress" value={email} onChangeText={setEmail} />
+                <CustomTextInput placeholder="Password *" value={password} onChangeText={setPassword} secureTextEntry />
+                <CustomTextInput placeholder="Confirm Password *" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry />
 
                 <CustomCheckbox checked={acceptTerms} onPress={() => setAcceptTerms(!acceptTerms)} />
 
                 <TouchableOpacity style={styles.bouton} onPress={handleSignUp}>
-                    <Text style={styles.boutonText}>S'inscrire</Text>
+                    <Text style={styles.boutonText}>Sign In</Text>
                 </TouchableOpacity>
 
                 <View style={styles.separator} />
 
-                <Text>ou, vous avez déjà un compte</Text>
+                <Text>or, you have a StepOn account</Text>
 
                 <TouchableOpacity style={styles.emailBouton}
-                                  onPress={() => Alert.alert('Connexion')}>
-                    <Text style={styles.emailBoutonText}>se connecter</Text>
+                                  onPress={() => router.push('/login')}>
+                    <Text style={styles.emailBoutonText}>Log In</Text>
                 </TouchableOpacity>
 
             </SafeAreaView>
@@ -113,8 +114,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     checkboxContainer: {
+        width: '80%',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignSelf: 'center',
         marginBottom: 20,
     },
     checkbox: {
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#5E83C0",
         alignItems: 'center',
         paddingVertical: 10, // haut et bas
-        paddingHorizontal: 135, // gauche et droite
+        width: '80%',
         marginTop: 30,
         borderRadius: 5,
     },
@@ -157,7 +159,6 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 8,
-        //marginTop: 15,
         marginBottom: 20,
         fontSize: 16,
     },

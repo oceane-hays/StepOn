@@ -34,7 +34,7 @@ export default function RootLayout() {
   useEffect(() => {
     const checkConnection = async () => {
       setTimeout(() => {
-        setIsConnected(false);
+        setIsConnected(true);
       }, 1000);
     };
     checkConnection();
@@ -43,7 +43,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (isConnected !== null) {
       if (isConnected) {
-        router.push("(tabs)");
+        router.push("/(tabs)");
       } else {
         router.push("/(auth)/login");
       }
@@ -51,19 +51,6 @@ export default function RootLayout() {
   }, [isConnected]);
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-    //   <NavigationContainer>
-    //     {isConnected ? (
-    //         <TabLayout />
-    //     ) : (
-    //         <Stack.Navigator>
-    //           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    //         </Stack.Navigator>
-    //     )}
-    //   </NavigationContainer>
-    //   <StatusBar style="auto" />
-    // </ThemeProvider>
-
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />

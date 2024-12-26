@@ -1,18 +1,24 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import React, { useMemo } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, Image, ImageSourcePropType } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import {Colors} from "@/services/COLORS";
+import { Colors } from "@/services/COLORS";
 
-const images = {
+const images: { [key: string]: ImageSourcePropType } = {
     Nature: require("./../../assets/images/filterIcon/landscape.png"),
     Urban: require("./../../assets/images/filterIcon/buildings.png"),
     Waterfront: require("./../../assets/images/filterIcon/river.png"),
+    Bike: require("./../../assets/images/filterIcon/bike.png"),
+    Run: require("./../../assets/images/filterIcon/run.png"),
+    Walk: require("./../../assets/images/filterIcon/walk.png"),
 };
 
-const selectedImages = {
+const selectedImages: { [key: string]: ImageSourcePropType } = {
     Nature: require("./../../assets/images/filterIcon/landscapeFill.png"),
     Urban: require("./../../assets/images/filterIcon/buildingsFill.png"),
     Waterfront: require("./../../assets/images/filterIcon/riverFill.png"),
+    Bike: require("./../../assets/images/filterIcon/bikeColor.png"),
+    Run: require("./../../assets/images/filterIcon/runColor.png"),
+    Walk: require("./../../assets/images/filterIcon/walkColor.png"),
 };
 
 interface FilterProps {
@@ -20,10 +26,11 @@ interface FilterProps {
     decrementSteps: () => void;
     steps: number;
     scenery: string | null;
+    transport: string | null;
     setScenery: (value: string | null) => void;
     routeType: string | null;
     setRouteType: (value: string | null) => void;
-
+    setRouteTransport: (value: string | null) => void;
 }
 
 const Filter: React.FC<FilterProps> = ({
@@ -34,11 +41,42 @@ const Filter: React.FC<FilterProps> = ({
                                            setScenery,
                                            routeType,
                                            setRouteType,
-
+                                           transport,
+                                           setRouteTransport,
                                        }) => {
+    const renderOption = useMemo(() => (
+        option: string,
+        selectedValue: string | null,
+        onPress: (value: string | null) => void,
+        useImage: boolean = false
+    ) => (
+        <TouchableOpacity
+            key={option}
+            style={[
+                styles.optionButton,
+                selectedValue === option && styles.selectedOption,
+            ]}
+            onPress={() => onPress(selectedValue === option ? null : option)}
+        >
+            {useImage && (
+                <Image
+                    source={selectedValue === option ? selectedImages[option] : images[option]}
+                    style={styles.image}
+                    resizeMode="contain"
+                />
+            )}
+            <Text
+                style={
+                    selectedValue === option ? styles.selectedText : styles.optionText
+                }
+            >
+                {option}
+            </Text>
+        </TouchableOpacity>
+    ), []);
+
     return (
         <View>
-            {/* Step Selector */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Set your steps</Text>
                 <View style={styles.row}>
@@ -52,78 +90,39 @@ const Filter: React.FC<FilterProps> = ({
                 </View>
             </View>
 
-            <View style={styles.divider} />
-
-            {/* Scenery Options */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Scenery</Text>
                 <View style={styles.row}>
-                    {["Nature", "Urban", "Waterfront"].map((option) => (
-                        <TouchableOpacity
-                            key={option}
-                            style={[
-                                styles.optionButton,
-                                scenery === option && styles.selectedOption,
-                            ]}
-                            onPress={() => setScenery(option)}
-                        >
-                            <Image
-                                source={scenery === option ? selectedImages[option] : images[option]}
-                                style={styles.image}
-                                resizeMode="contain"
-                            />
-                            <Text
-                                style={
-                                    scenery === option ? styles.selectedText : styles.optionText
-                                }
-                            >
-                                {option}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-
-
+                    {["Nature", "Urban", "Waterfront"].map((option) =>
+                        renderOption(option, scenery, setScenery, true)
+                    )}
                 </View>
             </View>
 
-            <View style={styles.divider} />
-
-            {/* Route Type Options */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Route type</Text>
                 <View style={styles.row}>
-                    {["Loop", "One-way"].map((option) => (
-                        <TouchableOpacity
-                            key={option}
-                            style={[
-                                styles.optionButton,
-                                routeType === option && styles.selectedOption,
-                            ]}
-                            onPress={() => setRouteType(option)}
-                        >
-                            <Text
-                                style={
-                                    routeType === option ? styles.selectedText : styles.optionText
-                                }
-                            >
-                                {option}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
+                    {["Loop", "One-way"].map((option) =>
+                        renderOption(option, routeType, setRouteType)
+                    )}
+                </View>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>My Transport</Text>
+                <View style={styles.row}>
+                    {['Bike', 'Run', 'Walk'].map((option) =>
+                        renderOption(option, transport, setRouteTransport, true)
+                    )}
                 </View>
             </View>
         </View>
     );
 };
 
-const card = {
-    marginHorizontal: 20,
-    marginBottom: 30,
-}
-
 const styles = StyleSheet.create({
     section: {
-        ...card,
+        marginHorizontal: 20,
         marginBottom: 24,
     },
     sectionTitle: {
@@ -146,7 +145,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 12,
         borderRadius: 20,
-
         borderColor: Colors.gris_fonce,
         marginHorizontal: 4,
         alignItems: 'center',
@@ -172,16 +170,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f0f0',
         marginRight: 12,
     },
-    divider: {
-        height: 1, // Thickness of the line
-        backgroundColor: '#ccc', // Gray color
-        width: '100%', // Stretch across the screen
-        marginVertical: 15, // Space above and below the line
-    },
     image: {
-        width: 40, // Ajustez selon la taille souhaitée
+        width: 40,
         height: 40,
     },
 });
 
 export default Filter;
+

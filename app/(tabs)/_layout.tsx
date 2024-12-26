@@ -73,21 +73,9 @@ export default function TabLayout() {
           tabBarButton: (props) => customTabBarButton({ ...props }),
         }}
       />
+
       <Tabs.Screen
-        name="profil"
-        options={{
-          title: "Profil",
-          tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons
-              name={focused ? "account-circle" : "account-circle-outline"}
-              color={color}
-              size={24}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="discoverSrcreen"
+        name="discoverScreen"
         options={{
           title: "Discover",
           tabBarIcon: ({ color, focused }) => (
@@ -97,6 +85,20 @@ export default function TabLayout() {
               size={24}
             />
           ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profil"
+        options={{
+            title: "Profil",
+            tabBarIcon: ({ color, focused }) => (
+                <MaterialCommunityIcons
+                    name={focused ? "account-circle" : "account-circle-outline"}
+                    color={color}
+                    size={24}
+                />
+            ),
         }}
       />
 

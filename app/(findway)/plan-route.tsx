@@ -21,17 +21,18 @@ export default function PlanRoute({ setDestination }: PlanRouteProps) {
   const [steps, setSteps] = useState(5000);
   const [scenery, setScenery] = useState<string | null>(null);
   const [routeType, setRouteType] = useState<string | null>(null);
+  const [routeTransport, setRouteTransport] = useState<string | null>(null);
   const [destination, setLocalDestination] = useState<string | null>(null);
 
   const router = useRouter();
 
   function submitRoute() {
-    if (scenery === null && routeType === null) {
-      Alert.alert('Please enter filter');
+    if (scenery === null && routeType === null && routeTransport !== null) {
+      Alert.alert(routeTransport);
     } else {
       router.push({
         pathname: "/choose-route",
-        params: { steps, scenery, routeType, destination },
+        params: { steps, scenery, routeType, destination, routeTransport },
       });
     }
   }
@@ -53,16 +54,7 @@ export default function PlanRoute({ setDestination }: PlanRouteProps) {
 
   return (
       <SafeAreaView style={styles.container}>
-        <View>
-          <View style={{ marginBottom: 90 }}>
-            <Logo />
-          </View>
-
-          <View style={styles.header}>
-            <Text style={styles.title}>Plan Your Route</Text>
-            <View style={styles.placeholder} />
-          </View>
-        </View>
+        <Logo />
 
         <View style={styles.card}>
           <Filter
@@ -73,6 +65,8 @@ export default function PlanRoute({ setDestination }: PlanRouteProps) {
               setScenery={setScenery}
               routeType={routeType}
               setRouteType={setRouteType}
+              transport={routeTransport}
+              setRouteTransport={setRouteTransport}
           />
 
           <SearchBar setDestination={handleDestinationChange} />

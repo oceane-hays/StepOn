@@ -34,7 +34,7 @@ export default function ChooseRoute() {
           <View style={styles.header}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => router.back()}
+                onPress={() => router.push('/(tabs)/route')}
             >
               <ArrowLeft size={30} color={Colors.orange_fonce} />
             </TouchableOpacity>

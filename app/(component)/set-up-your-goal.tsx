@@ -25,7 +25,8 @@ export default function SetUpYourGoal() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+
+
         <Logo />
 
         <View style={styles.header}>
@@ -57,15 +58,11 @@ export default function SetUpYourGoal() {
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() =>
-            router.push({
-              pathname: "/home",
-              params: { goal },
-            })
-          }
+            router.back()}
         >
           <Text style={styles.submitButtonText}>Set Goal</Text>
         </TouchableOpacity>
-      </View>
+
     </SafeAreaView>
   );
 }
@@ -73,16 +70,16 @@ export default function SetUpYourGoal() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
     backgroundColor: "#fff",
   },
-  content: {
-    flex: 0.5,
-    padding: 20,
-  },
+
   header: {
+    alignSelf: "center",
+    width: "80%",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   title: {
@@ -90,13 +87,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.orange_fonce,
   },
+
+
   counterContainer: {
+    width: "80%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 30,
   },
   button: {
+
     borderRadius: 10,
     backgroundColor: "#fff",
     padding: 10,
@@ -123,6 +124,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   submitButton: {
+    width: "80%",
     backgroundColor: Colors.orange_fonce,
     paddingHorizontal: 20,
     paddingVertical: 10,

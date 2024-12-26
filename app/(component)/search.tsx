@@ -56,7 +56,6 @@ export default function SearchBar({ setDestination } : any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
     },
     textInput: {
         borderWidth: 1,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     inputContainer: {
-        width: "95%",
+        width: "100%",
     },
     textInputFocused: {
         borderWidth: 1,

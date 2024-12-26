@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import { Settings, Edit, LogOut } from 'lucide-react-native';
+import {router, useRouter} from "expo-router";
 
-export default function ProfileScreen({ navigation } : any) {
+export default function ProfileScreen() {
     const user = {
         name: 'Jane Doe',
         email: 'jane.doe@example.com',
@@ -12,22 +13,12 @@ export default function ProfileScreen({ navigation } : any) {
         following: 567,
     };
 
-    const handleLogOut = async () => {
-        const code = verificationCode.join('');
-        console.log('Submitting code:', code);
-
-        if (!code) {
-            console.error('Verification code is empty');
-            return;
-        }
-        // ...
-    };
+    const router = useRouter();
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Settings')} style={styles.settingsButton}>
+                    <TouchableOpacity onPress={() => router.push('/(tabs)')} style={styles.settingsButton}>
                         <Settings color="#5E83C0" size={24} />
                     </TouchableOpacity>
                 </View>
@@ -51,7 +42,7 @@ export default function ProfileScreen({ navigation } : any) {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
+                <TouchableOpacity style={styles.editButton} onPress={() => router.push('/(tabs)')}>
                     <Edit color="#FFFFFF" size={20} />
                     <Text style={styles.editButtonText}>Edit Profile</Text>
                 </TouchableOpacity>
@@ -62,11 +53,10 @@ export default function ProfileScreen({ navigation } : any) {
                     <Text style={styles.placeholderText}>No recent activity</Text>
                 </View>
 
-                <TouchableOpacity style={styles.logoutButton} onPress={handleLogOut}>
+                <TouchableOpacity style={styles.logoutButton} onPress={() => router.push('/login')}>
                     <LogOut color="#5E83C0" size={20} />
                     <Text style={styles.logoutButtonText}>Log Out</Text>
                 </TouchableOpacity>
-            </ScrollView>
         </SafeAreaView>
     );
 }
