@@ -13,12 +13,9 @@ import Filter from "@/app/(component)/filter";
 import SearchBar from "@/app/(component)/search";
 import { Colors } from "@/services/COLORS";
 
-interface PlanRouteProps {
-  setDestination: (destination: string) => void;
-}
 
-export default function PlanRoute({ setDestination }: PlanRouteProps) {
-  const [steps, setSteps] = useState(5000);
+export default function PlanRoute() {
+  const [steps, setSteps] = useState(4000);
   const [scenery, setScenery] = useState<string | null>(null);
   const [routeType, setRouteType] = useState<string | null>(null);
   const [routeTransport, setRouteTransport] = useState<string | null>(null);
@@ -49,7 +46,6 @@ export default function PlanRoute({ setDestination }: PlanRouteProps) {
 
   const handleDestinationChange = (newDestination: string) => {
     setLocalDestination(newDestination);
-    setDestination(newDestination);
   };
 
   return (

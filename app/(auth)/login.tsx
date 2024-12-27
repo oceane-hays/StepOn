@@ -1,102 +1,114 @@
+import React, { useState } from "react";
 import {
-  Image,
   StyleSheet,
-  Platform,
   SafeAreaView,
   View,
   TextInput,
-  Button,
-  Alert,
   TouchableOpacity,
   Text,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
-// import { FieldValue } from 'firebase/firestore';
-import React, { useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import SMSVerificationScreen from "@/app/(auth)/smsVerification";
 import { useRouter } from "expo-router";
+import { FIREBASE_AUTH } from "@/services/FirebaseConfig";
 import Logo from "@/app/(component)/logo";
+import { ThemedText } from "@/components/ThemedText";
+import { loginEmail } from "./loginEmail"; // Import the loginEmail function
 
 export default function Login() {
-  const [number, onChangeNumber] = React.useState("");
-  const [usingEmail, setUsingEmail] = useState(false);
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [usingEmail, setUsingEmail] = useState(false);
+  const auth = FIREBASE_AUTH;
   const router = useRouter();
 
+  const handleLogin = async () => {
+    if (usingEmail) {
+      try {
+        const user = await loginEmail(email, password, setLoading, auth);
+        if (user) {
+          // Navigate to the main app screen or perform any other action
+          router.push("/(tabs)"); // Replace with your actual home route
+        }
+      } catch (error: any) {
+        Alert.alert("Login Error, wrong email or password");
+      }
+    } else {
+      // Handle phone number login
+      router.push("/(auth)/smsVerification");
+    }
+  };
+
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Logo/>
+      <SafeAreaProvider style={{ backgroundColor: "#fff" }}>
+        <SafeAreaView style={styles.container}>
+          <Logo />
 
-        <ThemedText style={styles.title}>CONNEXION</ThemedText>
-        {usingEmail ? (
-            <View style = {{ width: "100%" , alignItems: "center"}} >
-              <TextInput
-                  style={styles.input}
-                  onChangeText={(t) => setEmail(t)}
-                  value={email}
-                  placeholder="Email Adress"
-                  keyboardType="email-address"
-              />
-              <TextInput
-                  style={styles.input}
-                  onChangeText={(t) => setEmail(t)}
-                  value={email}
-                  placeholder="Password"
-                  keyboardType="visible-password"
-              />
-            </View>
+          <ThemedText style={styles.title}>CONNEXION</ThemedText>
 
-        ) : (
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeNumber}
-            value={number}
-            placeholder="Numéro de téléphone"
-            keyboardType="numeric"
-          />
-        )}
+          <View style={styles.inputContainer}>
+            {usingEmail ? (
+                <>
+                  <TextInput
+                      style={styles.input}
+                      onChangeText={setEmail}
+                      value={email}
+                      placeholder="Email Address"
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                  />
+                  <TextInput
+                      style={styles.input}
+                      onChangeText={setPassword}
+                      value={password}
+                      placeholder="Password"
+                      secureTextEntry={true}
+                  />
+                </>
+            ) : (
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPhoneNumber}
+                    value={phoneNumber}
+                    placeholder="Phone Number"
+                    keyboardType="phone-pad"
+                />
+            )}
 
-        <TouchableOpacity
-            style={styles.bouton}
-            onPress={() => {
-              router.push("/(auth)/smsVerification");
-            }}
-        >
-          <Text style={styles.buttonText}>Send code</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+              <Text style={styles.buttonText}>
+                {usingEmail ? "Login" : "Send Code"}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity
-          style={styles.emailBouton}
-          onPress={() => setUsingEmail(!usingEmail)}
-        >
-          {!usingEmail ? (
-            <Text style={styles.emailBoutonText}>
-              or, use your email adress
+          <TouchableOpacity
+              style={styles.switchButton}
+              onPress={() => setUsingEmail(!usingEmail)}
+          >
+            <Text style={styles.switchButtonText}>
+              {usingEmail
+                  ? "Use your phone number instead"
+                  : "Use your email address instead"}
             </Text>
-          ) : (
-            <Text style={styles.emailBoutonText}>
-              or, use your phone number
-            </Text>
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
 
+          <View style={styles.separator} />
 
-        <View style={styles.separator}/>
-        <Text>or, you don't have account</Text>
-        <TouchableOpacity
-            style={{...styles.emailBouton}}
-            onPress={() => router.push("/signin")}>
-          <Text style={{...styles.emailBoutonText, justifyContent : "flex-end"}}>Sign In</Text>
-        </TouchableOpacity>
+          <Text style={styles.noAccountText}>Don't have an account?</Text>
+          <TouchableOpacity
+              style={styles.signInButton}
+              onPress={() => router.push("/signin")}
+          >
+            <Text style={styles.signInButtonText}>Sign Up</Text>
+          </TouchableOpacity>
 
-
-
-      </SafeAreaView>
-    </SafeAreaProvider>
+          {loading && <ActivityIndicator size="large" color="#0000ff" />}
+        </SafeAreaView>
+      </SafeAreaProvider>
   );
 }
 
@@ -106,54 +118,69 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "space-between",
+    marginHorizontal: 20,
   },
   title: {
     color: "#000000",
-    fontWeight: "bold", // texte en gras
-    fontSize: 20,
-    paddingTop: 20,
+    fontWeight: "bold",
+    fontSize: 24,
+    marginTop: 20,
+    marginBottom: 30,
   },
-
+  inputContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
   input: {
-    width: "90%",
-    padding: 10,
-    margin: 10,
+    width: "100%",
+    padding: 15,
+    marginBottom: 15,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 8,
-    fontSize: 15,
+    fontSize: 16,
   },
-  bouton: {
+  button: {
     backgroundColor: "#5E83C0",
     alignItems: "center",
-    paddingVertical: 10, // haut et bas
-    width: "90%", // gauche et droite
-    borderRadius: 5, // ajout d'un rayon pour des coins arrondis
+    paddingVertical: 15,
+    width: "100%",
+    borderRadius: 8,
+    marginTop: 10,
   },
   buttonText: {
-    color: "#FFFFFF", // couleur blanche
-    fontWeight: "bold", // texte en gras
-    fontSize: 16, // taille de police optionnelle
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    fontSize: 18,
   },
-  emailBouton: {
-    backgroundColor: "#ffffff",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    alignItems: "center",
-
+  switchButton: {
+    marginTop: 20,
+    padding: 10,
   },
-  emailBoutonText: {
+  switchButtonText: {
     color: "#5E83C0",
-    fontSize: 13, // texte plus petit
-    textDecorationLine: "underline", // texte souligné
+    fontSize: 14,
+    textDecorationLine: "underline",
   },
-
   separator: {
-    height: 1, // hauteur de la ligne
-    width: "80%", // largeur de la ligne (ajustable)
-    backgroundColor: "#000000", // couleur de la ligne
+    height: 1,
+    width: "100%",
+    backgroundColor: "#000000",
     opacity: 0.25,
     marginTop: 200,
   },
+  noAccountText: {
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  signInButton: {
+    padding: 10,
+  },
+  signInButtonText: {
+    color: "#5E83C0",
+    fontSize: 16,
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  },
 });
+

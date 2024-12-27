@@ -34,7 +34,7 @@ export default function RootLayout() {
   useEffect(() => {
     const checkConnection = async () => {
       setTimeout(() => {
-        setIsConnected(true);
+        setIsConnected(false);
       }, 1000);
     };
     checkConnection();
