@@ -4,6 +4,7 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity, View, Image } from "react-native";
 import { Colors } from "@/services/COLORS";
+import {BlurView} from "expo-blur";
 
 const customTabBarButton = ({ children, onPress }: any) => (
   <TouchableOpacity
@@ -40,10 +41,10 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: "#5E83C0",
         tabBarInactiveTintColor: "#8e8e8e",
-        tabBarStyle: {
-          backgroundColor: "#fff",
-          borderRadius: 20,
-        },
+          tabBarStyle: {},
+          tabBarBackground: () => (
+              <BlurView tint='extraLight' intensity={600}  />
+          ),
         headerShown: false,
       }}
     >

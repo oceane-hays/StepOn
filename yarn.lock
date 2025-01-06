@@ -1988,12 +1988,24 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.4.0.tgz#8b6ee024a71cf94526ab796af1e9ae140684802c"
   integrity sha512-bzZH89/cwmpkPMKKveoC72C4JH0yF4St5Ceg/ZM9pA1SqX9MlRIrIrrOGZ/+yi++xAvFDiYfihtn9TvXWU9/rA==
 
-"@react-native-firebase/app@^21.6.1":
-  version "21.6.1"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-21.6.1.tgz#2f3a5f9bc9436ba3a0a76b9d32eb685e0a379340"
-  integrity sha512-o1i3aQMtJeofue+73j/8KO2l+/bRHaSHqOl7FtIeZfajQZaulaROugD2Rr2Mlc1o7LfEUyoDOoij9nGdrydEyw==
+"@react-native-community/slider@^4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.5.5.tgz#d70fc5870477760033769bbd6625d57e7d7678b2"
+  integrity sha512-x2N415pg4ZxIltArOKczPwn7JEYh+1OxQ4+hTnafomnMsqs65HZuEWcX+Ch8c5r8V83DiunuQUf5hWGWlw8hQQ==
+
+"@react-native-firebase/app@^21.6.2":
+  version "21.6.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-21.6.2.tgz#814574d02a14e767569469263d87fda9051ea799"
+  integrity sha512-yNEzADATa565Nfp1EoWdUgxUw9myCk+u0dblTOu0WQcWddBxug7zEhdvol0k2vkRlEuyLb0biTt7oUy72kKJpw==
   dependencies:
     firebase "10.13.2"
+
+"@react-native-firebase/auth@^21.6.2":
+  version "21.6.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-21.6.2.tgz#b7cc5d162c0ffe466a6e4c9cb550474fb1488a60"
+  integrity sha512-/U8V7B063ShawbEomgq9fzl8mk4eJfWP+f3rxRrIjVAl6AQTIWBbLZ2qFThQpmD5X5YKHX2z1NnZ+DVNVQHDjA==
+  dependencies:
+    plist "^3.1.0"
 
 "@react-native/assets-registry@0.76.1":
   version "0.76.1"
@@ -6429,7 +6441,7 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-plist@^3.0.5:
+plist@^3.0.5, plist@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/plist/-/plist-3.1.0.tgz"
   integrity sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==

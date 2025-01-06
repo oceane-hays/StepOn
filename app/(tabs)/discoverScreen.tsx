@@ -15,6 +15,6 @@ export default function DiscoverScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#2D2B3F",
     },
 })

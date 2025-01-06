@@ -10,8 +10,7 @@ import {
 import { ArrowLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
 
-export default function SMSVerificationScreen({ goBack }: any) {
-  const router = useRouter();
+export default function SMSVerificationScreen() {
 
   const [verificationCode, setVerificationCode] = useState([
     "",
@@ -43,7 +42,12 @@ export default function SMSVerificationScreen({ goBack }: any) {
       console.error("Verification code is empty");
       return;
     }
-    // ...
+    // ici on verifie que le code entre est le meme que obtenue
+    //   try {
+    //     await confirm.confirm(code);
+    //   } catch (error) {
+    //     console.log('Invalid code.');
+    //   }
   };
 
   const refs = [
@@ -56,11 +60,6 @@ export default function SMSVerificationScreen({ goBack }: any) {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-        <ArrowLeft color="#5E83C0" size={24} />
-      </TouchableOpacity>
-
       <View style={styles.content}>
         <Text style={styles.title}>Verify Your Number</Text>
         <Text style={styles.subtitle}>
@@ -79,11 +78,8 @@ export default function SMSVerificationScreen({ goBack }: any) {
             />
           ))}
         </View>
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Verify</Text>
-        </TouchableOpacity>
+
       </View>
-    </SafeAreaView>
   );
 }
 
@@ -131,6 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     color: "#5E83C0",
+    margin: 4,
   },
   submitButton: {
     backgroundColor: "#5E83C0",

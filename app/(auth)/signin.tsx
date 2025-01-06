@@ -48,7 +48,8 @@ export default function SignInPage() {
             alert('Veuillez accepter les conditions d\'utilisation.');
             return;
         }
-        router.push('/(auth)/smsVerification');
+        // router.push('/(auth)/smsVerification');
+        router.push('/(auth)/healthData');
         console.log('Sign up successful');
     };
 
@@ -78,14 +79,22 @@ export default function SignInPage() {
                     <Text style={styles.boutonText}>Sign In</Text>
                 </TouchableOpacity>
 
-                <View style={styles.separator} />
 
-                <Text>or, you have a StepOn account</Text>
+                <View style={{flex: 2,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    width: '100%'}} >
+                    <View style={styles.separator} />
 
-                <TouchableOpacity style={styles.emailBouton}
-                                  onPress={() => router.push('/login')}>
-                    <Text style={styles.emailBoutonText}>Log In</Text>
-                </TouchableOpacity>
+                    <Text style={{fontSize: 14,
+                        margin: 10,}}>or, you have a StepOn account</Text>
+
+                    <TouchableOpacity style={styles.emailBouton}
+                                      onPress={() => router.back()}>
+                        <Text style={styles.emailBoutonText}>Log In</Text>
+                    </TouchableOpacity>
+                </View>
+
 
             </SafeAreaView>
         </SafeAreaProvider>
@@ -114,7 +123,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     checkboxContainer: {
-        width: '80%',
+        width: '90%',
         flexDirection: 'row',
         alignSelf: 'center',
         marginBottom: 20,
@@ -144,7 +153,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#5E83C0",
         alignItems: 'center',
         paddingVertical: 10, // haut et bas
-        width: '80%',
+        width: '90%',
         marginTop: 30,
         borderRadius: 5,
     },
@@ -154,7 +163,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     input: {
-        width: '80%',
+        width: '90%',
         padding: 10,
         borderColor: '#ccc',
         borderWidth: 1,
@@ -164,11 +173,9 @@ const styles = StyleSheet.create({
     },
     separator: {
         height: 1, // hauteur de la ligne
-        width: '80%', // largeur de la ligne (ajustable)
+        width: '90%', // largeur de la ligne (ajustable)
         backgroundColor: '#000000', // couleur de la ligne
         opacity: 0.25,
-        marginVertical: 15, // espace autour de la ligne
-
     },
     emailBouton: {
         backgroundColor: "#ffffff",
@@ -179,7 +186,8 @@ const styles = StyleSheet.create({
     },
     emailBoutonText: {
         color: "#5E83C0",
-        fontSize: 13, // texte plus petit
-        textDecorationLine: 'underline', // texte souligné
+        fontSize: 16,
+        fontWeight: "bold",
+        textDecorationLine: "underline",
     },
 });

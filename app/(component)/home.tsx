@@ -79,7 +79,7 @@ export default function HomePage() {
         <ScrollView>
 
           <View style={styles.header}>
-            <Text style={styles.text}>Welcome back {userName},</Text>
+            <Text style={styles.text}>Hello {userName},</Text>
             <TouchableWithoutFeedback>
               <View style={styles.headerButton}>
                 <Image
@@ -95,7 +95,7 @@ export default function HomePage() {
 
             <View style={{backgroundColor: Colors.background,}}>
               <View style={styles.first}>
-                <View>
+                <View style={{justifyContent:'space-around', alignItems:'center', }}>
                   <AnimatedCircularProgress
                       size={210}
                       width={15}
@@ -119,12 +119,13 @@ export default function HomePage() {
                                   style={{ height: 90, width: 90 }}
                               />
                           )}
-                          <Text style={styles.text}>{totalSteps}</Text>
                         </View>
                     )}
                   </AnimatedCircularProgress>
-                  {percentage >= 100 && (
+                  {percentage >= 100 ? (
                       <Text style={styles.congratsText}>Congratulations! You've reached your goal!</Text>
+                  ) : (
+                      <Text style={styles.text}>{totalSteps}</Text>
                   )}
 
                 </View>
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: Colors.textPrimary,
-    fontWeight: "bold",
+    fontWeight: '500',
   },
   header: {
     alignItems: "center",

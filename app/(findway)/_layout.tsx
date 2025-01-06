@@ -5,7 +5,7 @@ export default function RouteLayout() {
         <Tabs
             screenOptions={{
                 headerShown: false,
-                tabBarStyle: { display: 'none' }, // This line hides the tab bar
+                tabBarStyle: { display: 'none' }, // hides the tab bar
             }}
         >
             <Tabs.Screen

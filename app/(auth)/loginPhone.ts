@@ -1,14 +1,14 @@
-import {Auth, signInWithPhoneNumber} from "@firebase/auth";
+import auth from '@react-native-firebase/auth';
 
-export const loginPhone = async (phone : string, setLoading: (loading: boolean) => void, auth: Auth, appVerifier    ) => {
-    setLoading(true);
+
+export const loginPhone = async (countryCode: string, phoneNumber: string, setConfirm: (confirm: any) => void) => {
     try {
-        const response = await signInWithPhoneNumber(auth, phone, appVerifier);
-        return response.user; // Return the user object
-    } catch (error: any) {
-        console.error(error);
-        throw new Error(`Failed to login: ${error.message}`);
-    } finally {
-        setLoading(false);
+        const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+        const confirmation = await auth().signInWithPhoneNumber(fullPhoneNumber);
+        setConfirm(confirmation);
+    } catch (error) {
+        console.error('Error during phone authentication:', error);
+        throw error;
     }
 }
+

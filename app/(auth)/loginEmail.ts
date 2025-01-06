@@ -4,7 +4,7 @@ export const loginEmail = async (email: string, password: string, setLoading: (l
     setLoading(true);
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
-        return response.user; // Return the user object
+        return response.user;
     } catch (error: any) {
         console.error(error);
         throw new Error(`Failed to login: ${error.message}`);
