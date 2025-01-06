@@ -25,10 +25,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>myapp</string>
-				<string>com.anonymous.StepOn</string>
+				<string>com.googleusercontent.apps.873116921868-ug8fm129l5e8n6p12cm0vpvla3v540kk</string>
 			</array>
 		</dict>
 		<dict/>

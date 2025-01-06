@@ -48,14 +48,16 @@ export default function Login() {
       if (!phoneNumber) {
         Alert.alert("Error", "Phone number is required");
       } else {
-        try {
-          setLoading(true);
-          await loginPhone('+1', phoneNumber, setConfirm);
-        } catch (error: any) {
-          Alert.alert("Login Error", error.message || "Failed to send verification code");
-        } finally {
-          setLoading(false);
-        }
+        console.log('PHONE NUMBER : +1',phoneNumber);
+
+      //   try {
+      //     setLoading(true);
+      //     await loginPhone('+1', phoneNumber, setConfirm);
+      //   } catch (error: any) {
+      //     Alert.alert("Login Error", error.message || "Failed to send verification code");
+      //   } finally {
+      //     setLoading(false);
+      //   }
       }
     }
   };
