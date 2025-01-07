@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { WeatherCondition, weatherConditions } from "./WeatherConditions";
 import { WEATHER_API } from "@/services/WEATHER_API";
+import {Region} from "react-native-maps";
 
 interface WeatherData {
   temperature: number;
@@ -45,14 +46,15 @@ async function getWeatherData(
   }
 }
 
-function Weather({ currLocation }: any) {
+function Weather( currLocation : Region) {
   const [weather, setWeather] = useState("Rain");
-  const [temperature, setTemperature] = useState(23);
+  const [temperature, setTemperature] = useState(-10);
 
+  console.log(currLocation)
 
   useEffect(() => {
 
-    getWeatherData(currLocation.latitude, currLocation.longitude)
+    getWeatherData(currLocation.location.latitude, currLocation.location.longitude)
       .then((weather) => {
         if (weather) {
           setTemperature(weather.temperature);
@@ -69,38 +71,28 @@ function Weather({ currLocation }: any) {
 
   return (
     <View style={styles.weatherContainer}>
-      <View>
-        <Text style={styles.title}>{weatherConditions[weather].title}</Text>
-        <Text style={styles.subtitle}>
-          {weatherConditions[weather].subtitle}
-        </Text>
-      </View>
-      <View>
-        <Text style={styles.tempText}>{temperature}˚</Text>
-        <Image
-          source={require("../../assets/images/weather/sun.png" )}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
+      <Image
+        source={require("../../assets/images/weather/mist.png" )}
+        style={styles.logo}
+      />
+      <Text style={styles.tempText}>{temperature}˚</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   weatherContainer: {
-    flex: 1,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
   },
   tempText: {
-    fontSize: 72,
-    color: "#fff",
+    fontSize: 16,
+    color: "#000",
+    fontWeight: "300",
+    marginHorizontal: 10,
   },
   logo: {
-    width: 100,
-    height: 90,
+    width: 25,
+    height: 25,
   },
   bodyContainer: {
     flex: 2,
@@ -111,7 +103,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 60,
-    color: "#fff",
+    color: "#000",
   },
   subtitle: {
     fontSize: 24,

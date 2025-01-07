@@ -49,6 +49,7 @@ export default function Login() {
         Alert.alert("Error", "Phone number is required");
       } else {
         console.log('PHONE NUMBER : +1',phoneNumber);
+        setPhoneEntered(true);
 
       //   try {
       //     setLoading(true);

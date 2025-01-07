@@ -27,7 +27,6 @@ export function CircularItems({ icon, numb, pourcent }: CircularItemsProps) {
                     </View>
                 )}
             </AnimatedCircularProgress>
-            <Text style={styles.infoText}>{numb}</Text>
         </View>
     );
 }

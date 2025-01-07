@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import {router} from "expo-router";
+import {router, useGlobalSearchParams} from "expo-router";
 import Logo from "@/app/(component)/logo";
 import {Colors} from "@/services/COLORS";
 import {TimerIcon} from "lucide-react-native";
@@ -38,6 +38,10 @@ const WavyBackground = () => (
 );
 
 export default function CompletionScreen({ steps, calories, duration }: CompletionScreenProps) {
+
+    const glob = useGlobalSearchParams();
+
+
     return (
         <View style={styles.container}>
 
@@ -52,7 +56,7 @@ export default function CompletionScreen({ steps, calories, duration }: Completi
                             source={require("../../assets/images/stop.png")}
                             style={styles.fireIcon}
                         />
-                        <Text style={styles.statValue}>{steps}</Text>
+                        <Text style={styles.statValue}>12</Text>
                         <Text style={styles.statLabel}>steps</Text>
 
                     </View>
@@ -61,12 +65,12 @@ export default function CompletionScreen({ steps, calories, duration }: Completi
                             source={require("../../assets/images/fire-icon.png")}
                             style={styles.fireIcon}
                         />
-                        <Text style={styles.statValue}>{calories}</Text>
+                        <Text style={styles.statValue}>2</Text>
                         <Text style={styles.statLabel}>calories</Text>
                     </View>
                     <View style={styles.statItem}>
                         <TimerIcon />
-                        <Text style={styles.statValue}>{duration}</Text>
+                        <Text style={styles.statValue}>{glob.elapsed}</Text>
                         <Text style={styles.statLabel}>duration</Text>
                     </View>
                 </View>
@@ -111,7 +115,6 @@ const styles = StyleSheet.create({
     },
     statValue: {
         fontSize: 24,
-        fontWeight: 'bold',
         color: '#333',
     },
     statLabel: {

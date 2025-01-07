@@ -121,7 +121,12 @@ export default function MapRoute() {
   };
 
   function handleFinish() {
-    router.push('/(findway)/end-route');
+    router.push({
+      pathname: "/end-route",
+      params: {
+        time : elapsed,
+      },
+    });
   };
 
   return (
@@ -180,7 +185,7 @@ export default function MapRoute() {
             <CircularItems
               icon={<Footprints color={Colors.orange_fonce} />}
               numb={0}
-              pourcent={10}
+              pourcent={0}
             />
             <View style={{ alignItems: "center" }}>
               <Text
@@ -191,16 +196,16 @@ export default function MapRoute() {
                   fontWeight: "300",
                 }}
               >
-                {elapsed ? Math.floor(elapsed / 3600) : 0}h{" "}
-                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}min
-                {elapsed ? elapsed % 60 : 0}
+                {elapsed ? Math.floor(elapsed / 3600) : 0}:{""}
+                {elapsed ? Math.floor(elapsed / 60) % 60 : 0}'
+                {elapsed ? elapsed % 60 : 0}''
               </Text>
               <Timer color={Colors.orange_fonce} />
             </View>
             <CircularItems
               icon={<MapPin color={Colors.orange_fonce} />}
               numb={0}
-              pourcent={60}
+              pourcent={0}
             />
           </View>
 
@@ -249,7 +254,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    opacity: 0.9,
   },
   card: {
     padding: 15,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     View,
     Text,
@@ -6,30 +6,45 @@ import {
     ScrollView,
     Image,
     TouchableOpacity,
-    StyleSheet,
+    StyleSheet, ImageSourcePropType,
 } from 'react-native';
-import { Search, Heart } from 'lucide-react-native';
+import {Search, Heart, HeartIcon} from 'lucide-react-native';
 
 export default function ExplorePlaces() {
-    const categories = [
-        { icon: '🏔️', name: 'Mountains' },
-        { icon: '🏕️', name: 'Camping' },
-        { icon: '🚣', name: 'Lake' },
-        { icon: '🌲', name: 'Forest' },
-    ];
+    const [isLiked, setIsLiked] = useState(false);
 
-    const trendingPlaces = [
+    const categories: { [key: string]: ImageSourcePropType } = {
+        Nature: require("./../../assets/images/filterIcon/landscapeFill.png"),
+        Urban: require("./../../assets/images/filterIcon/buildingsFill.png"),
+        Waterfront: require("./../../assets/images/filterIcon/riverFill.png"),
+    };
+
+    const [places, setPlaces] = useState([
         {
-            name: 'Pogli Lake',
+            id: 1,
+            name: 'Beaver Lake',
             distance: '12.3 km',
-            image: '/placeholder.svg?height=200&width=150',
+            image: require('./../../assets/images/BeaverLake.png'),
+            creator: '@jane.doe',
+            liked: false,
         },
         {
-            name: 'Mountain Path',
+            id: 2,
+            name: 'Montreal University',
             distance: '17.5 km',
-            image: '/placeholder.svg?height=200&width=150',
+            image: require('./../../assets/images/universityMontreal.png'),
+            creator: '@marie.stuart',
+            liked: false,
         },
-    ];
+    ]);
+
+    const toggleLike = (id: number) => {
+        setPlaces((prevPlaces) =>
+            prevPlaces.map((place) =>
+                place.id === id ? { ...place, liked: !place.liked } : place
+            )
+        );
+    };
 
     return (
         <View style={styles.container}>
@@ -50,13 +65,14 @@ export default function ExplorePlaces() {
 
             <Text style={styles.title}>Explore places</Text>
 
+            {/* Categories Section */}
             <View style={styles.categoriesSection}>
                 <Text style={styles.sectionTitle}>Popular categories</Text>
                 <View style={styles.categories}>
-                    {categories.map((category, index) => (
+                    {Object.entries(categories).map(([name, icon], index) => (
                         <TouchableOpacity key={index} style={styles.categoryItem}>
-                            <Text style={styles.categoryIcon}>{category.icon}</Text>
-                            <Text style={styles.categoryName}>{category.name}</Text>
+                            <Image source={icon} style={styles.categoryIcon} />
+                            <Text style={styles.categoryName}>{name}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -69,19 +85,25 @@ export default function ExplorePlaces() {
                         <Text style={styles.viewAll}>View all</Text>
                     </TouchableOpacity>
                 </View>
+
+
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {trendingPlaces.map((place, index) => (
-                        <View key={index} style={styles.placeCard}>
-                            <Image
-                                source={{ uri: place.image }}
-                                style={styles.placeImage}
-                            />
+                    {places.map((place) => (
+                        <View key={place.id} style={styles.placeCard}>
+                            <Image source={place.image} style={styles.placeImage} />
                             <View style={styles.placeInfo}>
                                 <Text style={styles.placeName}>{place.name}</Text>
                                 <Text style={styles.placeDistance}>{place.distance}</Text>
+                                <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>{place.creator}</Text>
                             </View>
-                            <TouchableOpacity style={styles.likeButton}>
-                                <Heart color="#fff" size={20} />
+                            <TouchableOpacity
+                                style={styles.likeButton}
+                                onPress={() => toggleLike(place.id)}
+                            >
+                                <HeartIcon
+                                    color={place.liked ? '#FF0000' : '#FFF'} // Red if liked, white otherwise
+                                    size={20}
+                                />
                             </TouchableOpacity>
                         </View>
                     ))}
@@ -138,6 +160,8 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     categories: {
+        width: '80%',
+        alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
@@ -150,8 +174,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     categoryIcon: {
-        fontSize: 24,
+        width: 40,
+        height: 40,
         marginBottom: 5,
+        resizeMode: 'contain',
     },
     categoryName: {
         color: '#fff',

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, {Marker, Region} from "react-native-maps";
 import {LATITUDE_DELTA} from "@/services/LATITUDE_DELTA";
@@ -12,6 +12,7 @@ import MapViewDirections from "react-native-maps-directions";
 import {GOOGLE_MAPS_API_KEY} from "@/services/GOOGLE_MAPS_API_KEY";
 import {GenerateRoundTrip} from "@/app/(component)/RouteComponent/generateRoute";
 import {Destination} from "@/app/(component)/RouteComponent/types";
+import Weather from "@/app/(component)/weather";
 
 const DEFAULT_LOCATION: Region = {
     latitude: 45.5010498,
@@ -22,12 +23,18 @@ const DEFAULT_LOCATION: Region = {
 
 const height = 1.7; // in meters
 
-export default function PathCard({ onPress, time, steps, location } : any)  {
+export default function PathCard({ onPress, time, steps, location, distanceSteps }: any) {
     const mapRef: any = useRef();
 
     const [distance, setDistance] = useState(0);
     const [destinations, setDestinations] = useState<Destination[]>([]);
-    const route = GenerateRoundTrip(DEFAULT_LOCATION, 4000, height);
+    const route = GenerateRoundTrip(DEFAULT_LOCATION, distanceSteps, height);
+
+    const distanceKm = useMemo(() => (distanceSteps * height * 0.414) / 1000, [distanceSteps, height]);
+    const timeHours = useMemo(() => Number(((distanceKm * 1000) / 1.34 / 3600).toFixed(2)), [distanceKm]);
+
+    console.log(timeHours);
+
 
     useEffect(() => {
         const newDestinations: Destination[] = route.map((point) => {
@@ -66,14 +73,13 @@ export default function PathCard({ onPress, time, steps, location } : any)  {
                     ))}
                     {destinations.map((destination, index) => {
                         if (index === 0) return null;
-                        console.log(distance);
                         return (
                             <MapViewDirections
                                 key={index}
                                 origin={destinations[index - 1]}
                                 destination={destination}
                                 apikey={GOOGLE_MAPS_API_KEY}
-                                strokeColor="orange"
+                                strokeColor={Colors.orange_fonce}
                                 strokeWidth={4}
                                 onError={(error) => console.log("Directions error:", error)}
                                 onReady={(result) => {
@@ -83,27 +89,22 @@ export default function PathCard({ onPress, time, steps, location } : any)  {
                         );
                     })}
                 </MapView>
-
-
                 <View style={styles.details}>
                     <View style={styles.contentContainer}>
-                        <View >
-                            <InfoItem icon={<MapPin size={20} color={Colors.bleu_fonce} />} text={location} />
+                        <View>
+                            <InfoItem icon={<MapPin size={20} color={Colors.bleu_fonce} />} text={DEFAULT_LOCATION.latitude || 'N/A'} />
                             <InfoItem icon={<Footprints size={20} color={Colors.bleu_fonce} />} text={`${formattedSteps(steps)} steps`} />
-                            <InfoItem icon={<Clock size={20} color={Colors.bleu_fonce} />} text={formattedTime(time)} />
-                            <InfoItem icon={<SunIcon size={20} color={Colors.bleu_fonce} />} text='21°C' />
+                            <InfoItem icon={<Clock size={20} color={Colors.bleu_fonce} />} text={formattedTime(timeHours || 0)} />
+                            <Weather location={DEFAULT_LOCATION} />
                         </View>
                     </View>
-
-                    <TouchableOpacity style={styles.button} onPress={onPress}>
+                    <TouchableOpacity style={styles.button} onPress={() => onPress(mapRef.current)}>
                         <Text style={styles.buttonText}>Start</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-
-
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

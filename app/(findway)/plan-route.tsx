@@ -29,7 +29,13 @@ export default function PlanRoute() {
     } else {
       router.push({
         pathname: "/choose-route",
-        params: { steps, scenery, routeType, destination, routeTransport },
+        params: {
+          steps: steps.toString(),
+          scenery,
+          routeType,
+          destination,
+          routeTransport
+        },
       });
     }
   }
@@ -37,7 +43,12 @@ export default function PlanRoute() {
   function submitRouteSkip() {
     router.push({
       pathname: "/choose-route",
-      params: { steps, scenery, routeType, destination: null },
+      params: {
+        steps: steps.toString(),
+        scenery,
+        routeType,
+        destination: null
+      },
     });
   }
 
@@ -51,7 +62,6 @@ export default function PlanRoute() {
   return (
       <SafeAreaView style={styles.container}>
         <Logo />
-
         <View style={styles.card}>
           <Filter
               incrementSteps={incrementSteps}
@@ -64,9 +74,7 @@ export default function PlanRoute() {
               transport={routeTransport}
               setRouteTransport={setRouteTransport}
           />
-
           <SearchBar setDestination={handleDestinationChange} />
-
           <View style={styles.row}>
             <TouchableOpacity
                 style={[styles.actionButton, styles.outlineButton]}
@@ -74,7 +82,6 @@ export default function PlanRoute() {
             >
               <Text style={styles.outlineButtonText}>Skip</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
                 style={styles.actionButton}
                 onPress={submitRoute}

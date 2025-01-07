@@ -6,15 +6,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { useRouter } from "expo-router";
+import {useGlobalSearchParams, useRouter} from "expo-router";
 import { ArrowLeft, RotateCw } from "lucide-react-native";
 import PathCard from "@/app/(component)/pathCard";
 import { Colors } from "@/services/COLORS";
-import { useSearchParams } from "expo-router/build/hooks";
-
 export default function ChooseRoute() {
   const router = useRouter();
-  const { steps, scenery, routeType, destination } = useSearchParams();
+  const glob = useGlobalSearchParams();
   const [key, setKey] = useState(0);
 
   const reloadPathCard = () => {
@@ -41,18 +39,17 @@ export default function ChooseRoute() {
             <Text style={styles.title}>Choose Your Path</Text>
             <View style={styles.placeholder} />
           </View>
-
           <View style={styles.cardContainer}>
             <PathCard
                 key={key}
-                steps={Number(steps)}
-                scenery={scenery as string}
-                routeType={routeType as string}
-                destination={destination as string}
+                steps={Number(glob.steps)}
+                scenery={glob.scenery as string}
+                routeType={glob.routeType as string}
+                destination={glob.destination as string}
                 onPress={Start}
+                distanceSteps={Number(glob.steps)}
             />
           </View>
-
           <View style={styles.footer}>
             <TouchableOpacity
                 style={styles.reloadButton}
@@ -61,7 +58,6 @@ export default function ChooseRoute() {
               <RotateCw size={24} color="#fff" />
               <Text style={styles.reloadButtonText}>New Route</Text>
             </TouchableOpacity>
-
             <TouchableOpacity style={styles.saveButton}>
               <Text style={styles.saveButtonText}>Save for later</Text>
             </TouchableOpacity>

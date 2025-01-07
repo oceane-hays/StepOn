@@ -31,7 +31,7 @@ export default function HomePage() {
   const [isCounting, setIsCounting] = useState(false);
   const [goal, setGoal] = useState(10000);
   const [userName, setUserName] = useState("Jane");
-  const [totalSteps, setTotalSteps] = useState(0);
+  const [totalSteps, setTotalSteps] = useState(5000);
   const [pedometerAvailability, setPedometerAvailability] = useState("");
   const [height, setHeight] = useState(1.7); // in meters
   const [weight, setWeight] = useState(70); // in kg
@@ -70,6 +70,12 @@ export default function HomePage() {
     });
 
     return () => subscription && subscription.remove();
+  };
+
+
+  const handleGoalChange = (newGoal: number) => {
+    setGoal(newGoal);
+    // You might want to save this to AsyncStorage or your backend here
   };
 
   return (
@@ -124,10 +130,8 @@ export default function HomePage() {
                         </View>
                     )}
                   </AnimatedCircularProgress>
-                  {percentage >= 100 ? (
+                  {percentage >= 100 && (
                       <Text style={styles.congratsText}>Congratulations! You've reached your goal!</Text>
-                  ) : (
-                      <Text style={styles.text}>{totalSteps}</Text>
                   )}
 
                 </View>
@@ -157,8 +161,8 @@ export default function HomePage() {
 
 
               <View style={styles.second}>
-                <View style={styles.secondTitle}>
-                  <Text style={{fontSize : 20, fontWeight: '600'}}>Change your Goal</Text>
+                <View>
+                  <Text style={styles.secTitle}>Change your Goal</Text>
                 </View>
 
                 <View style={styles.secondTitle}>
@@ -175,7 +179,8 @@ export default function HomePage() {
                   </View>
 
                 </View>
-                <SetUpYourGoal />
+
+                <SetUpYourGoal currentGoal={goal} onGoalChange={handleGoalChange} />
               </View>
             </View>
           </View>
@@ -291,9 +296,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 3,
   },
+  secTitle: {
+    fontSize : 20,
+    fontWeight: '600',
+    alignSelf: 'center',
+    paddingBottom: 20,
+  },
   secondTitle: {
     paddingBottom: 10,
-
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

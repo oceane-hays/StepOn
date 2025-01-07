@@ -1,10 +1,11 @@
 import React from 'react'
-import {View, Text, Image, StyleSheet, SafeAreaView, ScrollView} from 'react-native'
+import {View, Text, Image, StyleSheet, SafeAreaView, ScrollView, Alert} from 'react-native'
 import {ArrowLeft, Settings, MapPin, MailboxIcon, PhoneIcon} from 'lucide-react-native'
 import { LineChart } from 'react-native-chart-kit'
 import Bar from "@/app/(component)/Bar";
 import Logo from "@/app/(component)/logo";
 import {Colors} from "@/services/COLORS";
+import PathCard from "@/app/(component)/pathCard";
 
 interface CourseItem {
     name: string
@@ -12,13 +13,9 @@ interface CourseItem {
 }
 
 export default function FitnessProfile() {
-    const courses: CourseItem[] = [
-        { name: 'Pilates', progress: 50 },
-        { name: 'CrossFit', progress: 20 },
-        { name: 'Running', progress: 30 },
-    ]
+    const [activeTab, setActiveTab] = React.useState('STEPS');
 
-    const chartData = {
+    const stepData = {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [
             {
@@ -27,14 +24,35 @@ export default function FitnessProfile() {
         ],
     }
 
+    const weightData = {
+        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+        datasets: [
+            {
+                data: [61, 62.4, 61.5, 60.6, 60, 61.2, 59.9, 61, 62.4, 61.5, 60.6, 60],
+            },
+        ],
+    }
+
+    const handleModification = () => {
+        Alert.alert('modify')
+    }
+
     return (
         <SafeAreaView style={styles.container}>
 
             <ScrollView>
+
+                <View style={styles.imageProfileContainer}>
+                    <Image
+                        source={require('./../../assets/images/profile.png')}
+                        style={styles.imageProfile}
+                    />
+                </View>
+
                 {/* Header */}
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>PROFIL</Text>
-                    <Settings size={24} color="#000" />
+                    <Settings size={24} color="#000" onPress={handleModification}/>
                 </View>
 
                 {/* Profile Info */}
@@ -64,19 +82,15 @@ export default function FitnessProfile() {
 
                         <View style={styles.locationContainer}>
                             <MapPin size={24} color={Colors.bleu_clair} />
-                            <Text style={styles.locationText}>Los Angeles</Text>
+                            <Text style={styles.locationText}>Universite de Montreal</Text>
                         </View>
                         <View style={styles.locationContainer}>
                             <MailboxIcon size={24} color={Colors.bleu_clair} />
-                            <Text style={styles.locationText}>email User @ ffff.xom</Text>
+                            <Text style={styles.locationText}>email User @umontreal.ca</Text>
                         </View>
                         <View style={styles.locationContainer}>
                             <PhoneIcon size={24} color={Colors.bleu_clair} />
                             <Text style={styles.locationText}>+1 xxx xxxx0</Text>
-                        </View>
-                        <View style={styles.locationContainer}>
-                            <MailboxIcon size={24} color="#000" />
-                            <Text style={styles.locationText}>email User @ ffff.xom</Text>
                         </View>
                     </View>
                     <Image
@@ -89,26 +103,44 @@ export default function FitnessProfile() {
                 <View style={styles.activitySection}>
                     <Text style={styles.sectionTitle}>Activity</Text>
                     <View style={styles.tabs}>
-                        <Text style={[styles.tabText, styles.activeTab]}>STEPS</Text>
-                        <Text style={styles.tabText}>WEIGHT</Text>
+                        <Text
+                            style={[styles.tabText, activeTab === 'STEPS' && styles.activeTab]}
+                            onPress={() => setActiveTab('STEPS')}
+                        >
+                            STEPS
+                        </Text>
+                        <Text
+                            style={[styles.tabText, activeTab === 'WEIGHT' && styles.activeTab]}
+                            onPress={() => setActiveTab('WEIGHT')}
+                        >
+                            WEIGHT
+                        </Text>
                     </View>
 
                     <View style={styles.chartContainer}>
-                        <Bar />
+                        <Bar
+                            data={activeTab === 'STEPS' ? stepData.datasets[0].data : weightData.datasets[0].data}
+                            labels={activeTab === 'STEPS' ? stepData.labels : weightData.labels}
+                        />
                     </View>
                 </View>
+
 
                 {/* Course Section */}
                 <View style={styles.activitySection}>
                     <Text style={styles.sectionTitle}>Last Course</Text>
                     <View style={styles.tabs}>
+                        <PathCard />
+                    </View>
+                </View>
+
+                {/* Save Section */}
+                <View style={styles.activitySection}>
+                    <Text style={styles.sectionTitle}>Save Course</Text>
+                    <View style={styles.tabs}>
                         <Text style={[styles.tabText, styles.activeTab]}>WEEK</Text>
                         <Text style={styles.tabText}>MONTH</Text>
                         <Text style={styles.tabText}>ALL TIME</Text>
-                    </View>
-
-                    <View style={styles.chartContainer}>
-                        <Bar />
                     </View>
                 </View>
             </ScrollView>
@@ -121,8 +153,30 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    imageProfileContainer: {
+        alignSelf: 'center',
+        borderRadius: 50,
+        width: 100, // Largeur ajustée
+        height: 100, // Hauteur ajustée
+        borderColor: '#fff',
+        borderWidth: 1, // Ajout d'une bordure visible
+        shadowColor: '#FFA500', // Couleur de l'ombre (orange foncé)
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 3,
+        elevation: 5, // Pour les ombres sous Android
+        marginVertical: 30,
+        overflow: 'hidden', // Pour que l'image respecte les bordures arrondies
+    },
+    imageProfile: {
+        width: '100%', // L'image s'ajuste à la taille du conteneur
+        height: '100%',
+        resizeMode: 'cover', // Ajuste l'image en couvrant tout l'espace
+    },
+
     header: {
-        margin: 20,
+        marginBottom: 20,
+        marginHorizontal: 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -248,6 +302,8 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#FF6F61',
         borderRadius: 4,
+
     },
+
 })
 
