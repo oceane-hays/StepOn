@@ -121,7 +121,7 @@ export default function MapRoute() {
   };
 
   function handleFinish() {
-    router.replace('/(tabs)');
+    router.push('/(findway)/end-route');
   };
 
   return (

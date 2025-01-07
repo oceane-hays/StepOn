@@ -24,6 +24,7 @@ import Calendar from "@/app/(component)/calendar";
 import { router } from "expo-router";
 import Bar from "@/app/(component)/Bar";
 import Swiper from "react-native-swiper";
+import SetUpYourGoal from "@/app/(component)/set-up-your-goal";
 
 export default function HomePage() {
   const [percentage, setPercentage] = useState(100);
@@ -75,9 +76,6 @@ export default function HomePage() {
       <SafeAreaView style={styles.container}>
         <Logo />
 
-
-        <ScrollView>
-
           <View style={styles.header}>
             <Text style={styles.text}>Hello {userName},</Text>
             <TouchableWithoutFeedback>
@@ -90,10 +88,14 @@ export default function HomePage() {
               </View>
             </TouchableWithoutFeedback>
           </View>
+
+
           <Calendar/>
+
+
           <View style={styles.placeholder}>
 
-            <View style={{backgroundColor: Colors.background,}}>
+            <View style={{backgroundColor: Colors.background, height:'100%'}}>
               <View style={styles.first}>
                 <View style={{justifyContent:'space-around', alignItems:'center', }}>
                   <AnimatedCircularProgress
@@ -149,49 +151,34 @@ export default function HomePage() {
                     <Text style={styles.dataText}>{caloriesBurnt} cal</Text>
                   </View>
                 </View>
+
+
               </View>
 
-              <View>
-                <Bar />
+
+              <View style={styles.second}>
+                <View style={styles.secondTitle}>
+                  <Text style={{fontSize : 20, fontWeight: '600'}}>Change your Goal</Text>
+                </View>
+
+                <View style={styles.secondTitle}>
+                  <View style={styles.infoRow}>
+                    <Footprints />
+                    <Text style={styles.infoText}>{goal}</Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Image
+                        source={require("../../assets/images/fire-icon.png")}
+                        style={styles.fireIcon}
+                    />
+                    <Text style={styles.infoText}>N/A</Text>
+                  </View>
+
+                </View>
+                <SetUpYourGoal />
               </View>
             </View>
-
-            <View style={styles.second}>
-              <View style={styles.secondTitle}>
-                <Text style={{fontSize : 20}}>Set up your Goal</Text>
-                <TouchableOpacity
-                    onPress={() => {
-                      router.push({
-                        pathname: '/(component)/set-up-your-goal',
-                        params: {
-                          goal: goal,
-                        },
-                      });
-                    }}
-                >
-                  <ArrowRight color="#5E83C0" size={30} />
-                </TouchableOpacity>
-              </View>
-
-
-              <View style={styles.secondTitle}>
-                <View style={styles.infoRow}>
-                  <Footprints />
-                  <Text style={styles.infoText}>{goal}</Text>
-                </View>
-                <View style={styles.infoRow}>
-                  <Image
-                      source={require("../../assets/images/fire-icon.png")}
-                      style={styles.fireIcon}
-                  />
-                  <Text style={styles.infoText}>N/A</Text>
-                </View>
-              </View>
-            </View>
-
           </View>
-        </ScrollView>
-
 
 
       </SafeAreaView>
@@ -258,16 +245,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   placeholder: {
+    height: '100%',
     alignItems: "center",
     paddingHorizontal: 20,
     flex: 1,
+    justifyContent: "flex-end",
   },
   first: {
     ...commonCardStyle,
-
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
+
   },
   innerCircle: {
     alignItems: "center",
@@ -294,16 +283,17 @@ const styles = StyleSheet.create({
   },
   second: {
     ...commonCardStyle,
+    justifyContent: "flex-end",
     backgroundColor: "#fff",
-    width: "100%",
-    marginTop: 20,
+    margin: 20,
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.6,
     shadowRadius: 3,
   },
   secondTitle: {
-    paddingVertical: 10,
+    paddingBottom: 10,
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

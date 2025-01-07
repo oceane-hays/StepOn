@@ -40,11 +40,11 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#5E83C0",
-        tabBarInactiveTintColor: "#8e8e8e",
-          tabBarStyle: {},
-          tabBarBackground: () => (
-              <BlurView tint='extraLight' intensity={600}  />
-          ),
+        tabBarInactiveTintColor: "#fff",
+          tabBarStyle: {
+            backgroundColor: "#E8AA4A",
+              opacity: 0.8,
+          },
         headerShown: false,
       }}
     >
