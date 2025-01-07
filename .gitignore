@@ -38,3 +38,4 @@ app-example
 
 #Keys
 services/GOOGLE_MAPS_API_KEY.tsx
+services/WEATHER_API.ts

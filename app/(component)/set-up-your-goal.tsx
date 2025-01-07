@@ -24,23 +24,7 @@ export default function SetUpYourGoal() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-
-
-        <Logo />
-
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              router.back();
-            }}
-          >
-            <ArrowLeft size={30} color={Colors.orange_fonce} />
-          </TouchableOpacity>
-          <Text style={styles.title}>Set Up Your Goal</Text>
-          <View style={styles.placeholder} />
-        </View>
+      <View style={styles.container}>
 
         <View style={styles.counterContainer}>
           <TouchableOpacity style={styles.button} onPress={decrement}>
@@ -57,35 +41,20 @@ export default function SetUpYourGoal() {
 
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() =>
-            router.back()}
+
         >
-          <Text style={styles.submitButtonText}>Set Goal</Text>
+          <Text style={styles.submitButtonText}>Change Goal</Text>
         </TouchableOpacity>
 
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
-  },
-
-  header: {
-    alignSelf: "center",
-    width: "80%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
     marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: Colors.orange_fonce,
   },
 
 
@@ -94,13 +63,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 30,
+    marginBottom: 15,
   },
   button: {
-
     borderRadius: 10,
     backgroundColor: "#fff",
-    padding: 10,
+    padding: 7,
     shadowColor: Colors.gris_fonce,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
@@ -113,10 +81,10 @@ const styles = StyleSheet.create({
   },
   goalContainer: {
     alignItems: "center",
-    marginHorizontal: 20,
+    marginHorizontal: 5,
   },
   goalText: {
-    fontSize: 36,
+    fontSize: 20,
     fontWeight: "bold",
   },
   unitText: {
