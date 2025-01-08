@@ -4,14 +4,11 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  ScrollView,
   TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import {
-  ArrowRight,
   Footprints,
   LocateIcon,
   TimerIcon,
@@ -19,22 +16,26 @@ import {
 import { Pedometer } from "expo-sensors";
 import LottieView from "lottie-react-native";
 import Logo from "@/app/(component)/logo";
-import Discover from "@/app/(component)/discover";
 import Calendar from "@/app/(component)/calendar";
-import { router } from "expo-router";
-import Bar from "@/app/(component)/Bar";
-import Swiper from "react-native-swiper";
 import SetUpYourGoal from "@/app/(component)/set-up-your-goal";
+import {UserData} from "@/app/(component)/user";
 
-export default function HomePage() {
+
+
+export default function HomePage(users : any) {
   const [percentage, setPercentage] = useState(100);
   const [isCounting, setIsCounting] = useState(false);
+
+  const userGoal: number = users['users'][0]?.target_steps
   const [goal, setGoal] = useState(10000);
-  const [userName, setUserName] = useState("Jane");
-  const [totalSteps, setTotalSteps] = useState(5000);
+  const [totalSteps, setTotalSteps] = useState(0);
   const [pedometerAvailability, setPedometerAvailability] = useState("");
-  const [height, setHeight] = useState(1.7); // in meters
-  const [weight, setWeight] = useState(70); // in kg
+
+  const userHeight: number = users['users'][0]?.height / 100
+  const [height, setHeight] = useState(1.7) // in meters
+
+  const userWeight: number = users['users'][0]?.weight
+  const [weight, setWeight] = useState(60); // in kg
 
   const strideLength = useMemo(() => height * 0.414, [height]);
   const distanceKm = useMemo(() => (totalSteps * strideLength) / 1000, [totalSteps, strideLength]);
@@ -44,6 +45,7 @@ export default function HomePage() {
   const MET = 3.5;
   const timeHours = useMemo(() => Number(((distanceKm * 1000) / averageSpeed / 3600).toFixed(2)), [distanceKm]);
   const caloriesBurnt = useMemo(() => Number((((timeHours * MET * weight * 3.5) / 200) * 60).toFixed(0)), [timeHours, weight]);
+
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -78,12 +80,15 @@ export default function HomePage() {
     // You might want to save this to AsyncStorage or your backend here
   };
 
+  console.log(users)
+
+  //
   return (
       <SafeAreaView style={styles.container}>
         <Logo />
 
           <View style={styles.header}>
-            <Text style={styles.text}>Hello {userName},</Text>
+            <Text style={styles.text}>Hello { users['users'][0]?.name },</Text>
             <TouchableWithoutFeedback>
               <View style={styles.headerButton}>
                 <Image

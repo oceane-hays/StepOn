@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Text,
+  Text, Image,
 } from "react-native";
 import MapView, { Marker, Region } from "react-native-maps";
 import { LATITUDE_DELTA } from "@/services/LATITUDE_DELTA";
@@ -19,7 +19,8 @@ import { Destination } from "@/app/(component)/RouteComponent/types";
 import { AppState } from "react-native";
 import { differenceInSeconds } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
+import {useGlobalSearchParams, useRouter} from "expo-router";
+import * as Location from "expo-location";
 
 const DEFAULT_LOCATION: Region = {
   latitude: 45.5010498,
@@ -29,7 +30,6 @@ const DEFAULT_LOCATION: Region = {
 };
 
 const height = 1.7; // in meters
-const route = GenerateRoundTrip(DEFAULT_LOCATION, 4000, height);
 
 export default function MapRoute() {
   const mapRef = useRef<MapView>(null);
@@ -40,6 +40,38 @@ export default function MapRoute() {
   const [elapsed, setElapsed] = useState<number | undefined>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const router = useRouter();
+  const glob = useGlobalSearchParams();
+
+  const [location, setLocation] = useState();
+
+  useEffect(() => {
+    const getPermissions = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Please grant location permissions");
+        return;
+      }
+
+      const { coords }: any = await Location.getCurrentPositionAsync({});
+      setLocation(coords);
+      console.log("Location:");
+      console.log(coords);
+
+      if (coords) {
+        console.log(coords["latitude"], coords["longitude"]);
+        setLocation({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        });
+      }
+    };
+    getPermissions();
+  }, []);
+
+
+  const route = GenerateRoundTrip(DEFAULT_LOCATION, Number(glob.steps) ,height);
 
   const recordStartTime = async () => {
     try {
@@ -186,26 +218,33 @@ export default function MapRoute() {
               icon={<Footprints color={Colors.orange_fonce} />}
               numb={0}
               pourcent={0}
+              colors={Colors.orange_fonce}
             />
             <View style={{ alignItems: "center" }}>
+              <Timer color='#000' />
               <Text
                 style={{
-                  color: Colors.orange_fonce,
+                  color: '#000',
                   fontSize: 30,
                   marginBottom: 10,
-                  fontWeight: "300",
+                  fontWeight: "500",
                 }}
               >
                 {elapsed ? Math.floor(elapsed / 3600) : 0}:{""}
                 {elapsed ? Math.floor(elapsed / 60) % 60 : 0}'
                 {elapsed ? elapsed % 60 : 0}''
               </Text>
-              <Timer color={Colors.orange_fonce} />
             </View>
             <CircularItems
-              icon={<MapPin color={Colors.orange_fonce} />}
+              icon={<Image
+                  source={require('./../../assets/images/fire-icon.png')}
+                  resizeMode="contain"
+                  style={{width:42,height:42}}
+
+              />}
               numb={0}
               pourcent={0}
+              colors={Colors.bleu_clair}
             />
           </View>
 

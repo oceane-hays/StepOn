@@ -7,9 +7,10 @@ interface CircularItemsProps {
     icon: JSX.Element;
     numb: number;
     pourcent: number;
+    colors: string;
 }
 
-export function CircularItems({ icon, numb, pourcent }: CircularItemsProps) {
+export function CircularItems({ icon, numb, pourcent, colors }: CircularItemsProps) {
     return (
         <View style={styles.container}>
             <AnimatedCircularProgress
@@ -18,7 +19,7 @@ export function CircularItems({ icon, numb, pourcent }: CircularItemsProps) {
                 fill={pourcent}
                 rotation={0}
                 tintColor={Colors.orange_fonce}
-                backgroundColor={Colors.orange_clair}
+                backgroundColor={colors}
                 lineCap="round"
             >
                 {(fill) => (

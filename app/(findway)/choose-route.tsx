@@ -10,10 +10,16 @@ import {useGlobalSearchParams, useRouter} from "expo-router";
 import { ArrowLeft, RotateCw } from "lucide-react-native";
 import PathCard from "@/app/(component)/pathCard";
 import { Colors } from "@/services/COLORS";
-export default function ChooseRoute() {
+import {GenerateRoundTrip} from "@/app/(component)/RouteComponent/generateRoute";
+import {Region} from "react-native-maps";
+
+
+
+export default function ChooseRoute(DEFAULT_LOCATION : Region) {
   const router = useRouter();
   const glob = useGlobalSearchParams();
   const [key, setKey] = useState(0);
+
 
   const reloadPathCard = () => {
     setKey(prevKey => prevKey + 1);
@@ -22,7 +28,10 @@ export default function ChooseRoute() {
   function Start(mapRef : any) {
     router.push({
       pathname: "/map-route",
-      params: { map : mapRef },
+      params: {
+        map : mapRef,
+        step : glob.steps,
+      },
     });
   }
 

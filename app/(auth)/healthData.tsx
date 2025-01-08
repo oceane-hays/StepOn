@@ -71,7 +71,12 @@ export default function HealthData() {
 
 
                 <TouchableOpacity style={styles.calculateButton} onPress={ () => {
-                    router.push("/(tabs)")
+                    router.push({
+                        pathname: "/(tabs)",
+                        params: {
+
+                        }
+                    })
                 }}>
                     <Text style={styles.calculateButtonText}>Get Started</Text>
                 </TouchableOpacity>

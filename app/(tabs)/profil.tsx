@@ -1,11 +1,16 @@
-import React from 'react'
-import {View, Text, Image, StyleSheet, SafeAreaView, ScrollView, Alert} from 'react-native'
-import {ArrowLeft, Settings, MapPin, MailboxIcon, PhoneIcon} from 'lucide-react-native'
+import React, {useEffect, useState} from 'react'
+import {View, Text, Image, StyleSheet, SafeAreaView, ScrollView, Alert, TouchableOpacity} from 'react-native'
+import {ArrowLeft, Settings, MapPin, MailboxIcon, PhoneIcon, HeartIcon} from 'lucide-react-native'
 import { LineChart } from 'react-native-chart-kit'
 import Bar from "@/app/(component)/Bar";
 import Logo from "@/app/(component)/logo";
 import {Colors} from "@/services/COLORS";
 import PathCard from "@/app/(component)/pathCard";
+import {router} from "expo-router";
+import * as Location from "expo-location";
+import {LATITUDE_DELTA} from "@/services/LATITUDE_DELTA";
+import {LONGITUDE_DELTA} from "@/services/LONGITUDE_DELTA";
+import {fetchUsers, UserData} from "@/app/(component)/user";
 
 interface CourseItem {
     name: string
@@ -13,6 +18,39 @@ interface CourseItem {
 }
 
 export default function FitnessProfile() {
+
+    const [location, setLocation] = useState();
+    const [users, setUsers] = useState<UserData[]>([]);
+
+
+    useEffect(() => {
+        fetchUsers(setUsers);
+
+        const getPermissions = async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                console.log("Please grant location permissions");
+                return;
+            }
+
+            const { coords }: any = await Location.getCurrentPositionAsync({});
+            setLocation(coords);
+            console.log("Location:");
+            console.log(coords);
+
+            if (coords) {
+                console.log(coords["latitude"], coords["longitude"]);
+                setLocation({
+                    latitude: coords.latitude,
+                    longitude: coords.longitude,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA,
+                });
+            }
+        };
+        getPermissions();
+    }, []);
+
     const [activeTab, setActiveTab] = React.useState('STEPS');
 
     const stepData = {
@@ -33,14 +71,21 @@ export default function FitnessProfile() {
         ],
     }
 
-    const handleModification = () => {
-        Alert.alert('modify')
+    const handleLogOut = () => {
+        router.push('/(auth)/login')
     }
 
+
+    console.log('sss', users);
     return (
         <SafeAreaView style={styles.container}>
 
-            <ScrollView>
+            <ScrollView
+                contentContainerStyle={{
+                    paddingBottom: 20, // Ajustez si nécessaire
+                    paddingTop: 10,
+                }}
+            >
 
                 <View style={styles.imageProfileContainer}>
                     <Image
@@ -52,7 +97,11 @@ export default function FitnessProfile() {
                 {/* Header */}
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>PROFIL</Text>
-                    <Settings size={24} color="#000" onPress={handleModification}/>
+                    <Text style={styles.headerTitle}>{ users[0]?.name }</Text>
+                    <TouchableOpacity onPress={handleLogOut}>
+                        <Image source={require('./../../assets/images/images.png')} resizeMode={'contain'}
+                               style={{width:35,height:35}} />
+                    </TouchableOpacity>
                 </View>
 
                 {/* Profile Info */}
@@ -65,7 +114,7 @@ export default function FitnessProfile() {
                                     <Text style={styles.statIconText}>📏</Text>
                                 </View>
                                 <View>
-                                    <Text style={styles.statValue}>171 Cm</Text>
+                                    <Text style={styles.statValue}>{ users[0]?.height }</Text>
                                     <Text style={styles.statLabel}>Height</Text>
                                 </View>
                             </View>
@@ -74,7 +123,7 @@ export default function FitnessProfile() {
                                     <Text style={styles.statIconText}>⚖️</Text>
                                 </View>
                                 <View>
-                                    <Text style={styles.statValue}>55 Kg</Text>
+                                    <Text style={styles.statValue}> { users[0]?.weight }</Text>
                                     <Text style={styles.statLabel}>Weight</Text>
                                 </View>
                             </View>
@@ -82,15 +131,15 @@ export default function FitnessProfile() {
 
                         <View style={styles.locationContainer}>
                             <MapPin size={24} color={Colors.bleu_clair} />
-                            <Text style={styles.locationText}>Universite de Montreal</Text>
+                            <Text style={styles.locationText}>{ users[0]?.address }</Text>
                         </View>
                         <View style={styles.locationContainer}>
                             <MailboxIcon size={24} color={Colors.bleu_clair} />
-                            <Text style={styles.locationText}>email User @umontreal.ca</Text>
+                            <Text style={styles.locationText}>{ users[0]?.email }</Text>
                         </View>
                         <View style={styles.locationContainer}>
                             <PhoneIcon size={24} color={Colors.bleu_clair} />
-                            <Text style={styles.locationText}>+1 xxx xxxx0</Text>
+                            <Text style={styles.locationText}>+1 { users[0]?.phoneNumber }</Text>
                         </View>
                     </View>
                     <Image
@@ -125,22 +174,32 @@ export default function FitnessProfile() {
                     </View>
                 </View>
 
-
                 {/* Course Section */}
                 <View style={styles.activitySection}>
                     <Text style={styles.sectionTitle}>Last Course</Text>
-                    <View style={styles.tabs}>
-                        <PathCard />
-                    </View>
+
+                    <PathCard
+                        time = {40}
+                        steps = {5000}
+                        location = {location}
+                        distanceSteps={5000}
+                        onPress={() => router.push('/(findway)/map-route')}
+                    />
+
                 </View>
+
 
                 {/* Save Section */}
                 <View style={styles.activitySection}>
-                    <Text style={styles.sectionTitle}>Save Course</Text>
-                    <View style={styles.tabs}>
-                        <Text style={[styles.tabText, styles.activeTab]}>WEEK</Text>
-                        <Text style={styles.tabText}>MONTH</Text>
-                        <Text style={styles.tabText}>ALL TIME</Text>
+                    <Text style={styles.sectionTitle}>Post Course</Text>
+                    <View key={1} style={styles.placeCard}>
+                        <Image source={require('./../../assets/images/BeaverLake.png')} style={styles.placeImage} />
+                        <View style={styles.placeInfo}>
+                            <Text style={styles.placeName}>Beaver Lake</Text>
+                            <Text style={styles.placeDistance}>7 632 steps</Text>
+                            <Text style={{fontSize: 16, color: '#fff', fontWeight: 'bold'}}>@Jane.Doe</Text>
+                        </View>
+                        <Text style={styles.placeName}>1 234 Like</Text>
                     </View>
                 </View>
             </ScrollView>
@@ -303,6 +362,46 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF6F61',
         borderRadius: 4,
 
+    },
+    placeCard: {
+        width: 200,
+        height: 280,
+        marginRight: 15,
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
+    placeImage: {
+        width: '100%',
+        height: '100%',
+    },
+    placeInfo: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: 15,
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    },
+    placeName: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    placeDistance: {
+        color: '#fff',
+        opacity: 0.8,
+    },
+    likeButton: {
+        position: 'absolute',
+        right: 15,
+        bottom: 15,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
 })

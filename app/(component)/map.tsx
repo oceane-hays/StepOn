@@ -58,7 +58,7 @@ export default function GoogleMapScreen() {
         ref={mapRef}
         provider={MapView.PROVIDER_GOOGLE}
         style={styles.map}
-        initialRegion={default_location}
+        initialRegion={location}
       >
         {default_location !== undefined && (
           <Marker coordinate={default_location} />

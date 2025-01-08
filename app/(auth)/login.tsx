@@ -37,6 +37,7 @@ export default function Login() {
         const user = await loginEmail(email, password, setLoading, FIREBASE_AUTH);
         if (user) {
           router.push("/(tabs)");
+          console.log(user);
         }
       } catch (error: any) {
         Alert.alert("Login Error", "Wrong email or password");

@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {router} from "expo-router";
+import {createUserWithEmailAndPassword} from "@firebase/auth";
+import auth from "@react-native-firebase/auth";
+import {FIREBASE_AUTH} from "@/services/FirebaseConfig";
 
 
 
@@ -22,7 +25,7 @@ const CustomCheckbox = ({ checked, onPress } : any) => (
         <View style={[styles.checkbox, checked && styles.checked]}>
             {checked && <Text style={styles.checkmark}>✓</Text>}
         </View>
-        <Text style={styles.checkboxLabel}>J'accepte les conditions d'utilisations</Text>
+        <Text style={styles.checkboxLabel}>I accept Terms and Users conditions*</Text>
     </TouchableOpacity>
 );
 
@@ -35,7 +38,7 @@ export default function SignInPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [acceptTerms, setAcceptTerms] = useState(false);
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         if (!name || !address || !phone || !password || !confirmPassword) {
             alert('Veuillez remplir tous les champs.');
             return;
@@ -48,9 +51,10 @@ export default function SignInPage() {
             alert('Veuillez accepter les conditions d\'utilisation.');
             return;
         }
-        // router.push('/(auth)/smsVerification');
         router.push('/(auth)/healthData');
         console.log('Sign up successful');
+
+        await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
     };
 
     return (

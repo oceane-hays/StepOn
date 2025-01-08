@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   counterContainer: {
-    width: "80%",
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   submitButton: {
-    width: "80%",
+    width: "100%",
     backgroundColor: Colors.orange_fonce,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   submitButtonText: {
     color: "white",

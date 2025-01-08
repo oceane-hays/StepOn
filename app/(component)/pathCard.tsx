@@ -29,6 +29,7 @@ export default function PathCard({ onPress, time, steps, location, distanceSteps
     const [distance, setDistance] = useState(0);
     const [destinations, setDestinations] = useState<Destination[]>([]);
     const route = GenerateRoundTrip(DEFAULT_LOCATION, distanceSteps, height);
+    console.log('route 2', route);
 
     const distanceKm = useMemo(() => (distanceSteps * height * 0.414) / 1000, [distanceSteps, height]);
     const timeHours = useMemo(() => Number(((distanceKm * 1000) / 1.34 / 3600).toFixed(2)), [distanceKm]);
@@ -110,7 +111,6 @@ export default function PathCard({ onPress, time, steps, location, distanceSteps
 const styles = StyleSheet.create({
     mapContainer: {
         ...StyleSheet.absoluteFillObject,
-        flex: 1,
         alignItems: "center",
         marginHorizontal: 5,
         marginVertical: 5,
@@ -130,13 +130,12 @@ const styles = StyleSheet.create({
     card: {
         borderRadius: 20,
         overflow: "visible", // Adapter selon la plateforme
-        height: "95%",
+        height: 600,
         backgroundColor: "#fff", // Assurez-vous que la couleur est définie
         shadowColor: Colors.gris_fonce,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 6,
-        elevation: 8, // Android
     },
     details: {
         width: "90%",
